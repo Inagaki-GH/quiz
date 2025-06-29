@@ -1,0 +1,15 @@
+{
+  "name": "programming-quiz-game",
+  "version": "1.0.0",
+  "description": "AWS Lambda + API Gateway + DynamoDB構成のプログラミング学習クイズゲーム",
+  "scripts": {
+    "install-all": "cd backend && npm install && cd ../frontend && npm install && cd ../infra && npm install",
+    "build-backend": "cd backend && npm run build",
+    "deploy-infra": "cd infra && npm run deploy",
+    "deploy-sam": "cd backend && npm run deploy",
+    "serve-frontend": "cd frontend && npm run serve"
+  },
+  "keywords": ["aws", "lambda", "quiz", "typescript", "programming"],
+  "author": "Quiz Game Developer",
+  "license": "MIT"
+}

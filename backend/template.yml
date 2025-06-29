@@ -1,0 +1,71 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  QuizApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+      Cors:
+        AllowMethods: "'GET,POST,OPTIONS'"
+        AllowHeaders: "'Content-Type'"
+        AllowOrigin: "'*'"
+
+  QuizFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: dist/
+      Handler: handlers/quiz.handler
+      Runtime: nodejs18.x
+      Environment:
+        Variables:
+          CHAPTERS_TABLE: !Ref ChaptersTable
+          SCORES_TABLE: !Ref ScoresTable
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ChaptersTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ScoresTable
+      Events:
+        GetChapter:
+          Type: Api
+          Properties:
+            RestApiId: !Ref QuizApi
+            Path: /chapter/{chapterId}
+            Method: get
+        PostAnswer:
+          Type: Api
+          Properties:
+            RestApiId: !Ref QuizApi
+            Path: /answer
+            Method: post
+
+  ChaptersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: chapterId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: chapterId
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+
+  ScoresTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: userId
+          AttributeType: S
+        - AttributeName: timestamp
+          AttributeType: S
+      KeySchema:
+        - AttributeName: userId
+          KeyType: HASH
+        - AttributeName: timestamp
+          KeyType: RANGE
+      BillingMode: PAY_PER_REQUEST
+
+Outputs:
+  ApiUrl:
+    Value: !Sub "https://${QuizApi}.execute-api.${AWS::Region}.amazonaws.com/prod"

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>プログラミングクイズ</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1>プログラミングクイズ</h1>
+            <progress id="progress" value="0" max="4"></progress>
+        </header>
+        
+        <main id="main-content">
+            <div id="chapter-select" class="screen">
+                <h2>章を選択してください</h2>
+                <button onclick="startChapter('chapter1')">第1章: 基本構文</button>
+                <button onclick="startChapter('chapter2')">第2章: 制御構造</button>
+                <button onclick="startChapter('chapter3')">第3章: 関数</button>
+            </div>
+            
+            <div id="quiz-screen" class="screen hidden">
+                <div id="question-container">
+                    <h3 id="question-text"></h3>
+                    <div id="options-container"></div>
+                    <button id="submit-btn" onclick="submitAnswer()" disabled>回答する</button>
+                </div>
+            </div>
+            
+            <div id="result-screen" class="screen hidden">
+                <div id="result-content">
+                    <h3 id="result-title"></h3>
+                    <p id="score-display"></p>
+                    <button id="next-btn" onclick="nextQuestion()">次の問題</button>
+                    <button id="finish-btn" onclick="finishQuiz()" class="hidden">完了</button>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

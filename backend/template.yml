@@ -14,7 +14,7 @@ Resources:
   QuizFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: dist/
+      CodeUri: src/
       Handler: handlers/quiz.handler
       Runtime: nodejs18.x
       Environment:

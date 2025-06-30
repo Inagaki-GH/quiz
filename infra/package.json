@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "scripts": {
     "build": "tsc",
-    "deploy": "cdk deploy"
+    "deploy-waf": "cd us-east-1 && cdk deploy",
+    "deploy-main": "cd ap-northeast-1 && cdk deploy",
+    "deploy-all": "npm run deploy-waf && npm run deploy-main"
   },
   "dependencies": {
     "aws-cdk-lib": "^2.0.0",
@@ -11,6 +13,7 @@
   },
   "devDependencies": {
     "@types/node": "^18.0.0",
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "ts-node": "^10.0.0"
   }
 }

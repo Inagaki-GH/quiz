@@ -10,15 +10,26 @@
     <div id="app">
         <header>
             <h1>プログラミングクイズ</h1>
+            <div id="game-status">
+                <div id="lives">❤️❤️❤️</div>
+                <div id="combo-display">
+                    <span id="combo-count">0</span>
+                    <span id="combo-text">COMBO</span>
+                </div>
+                <div id="timers">
+                    <div id="chapter-timer">章: <span id="chapter-time">5:00</span></div>
+                    <div id="question-timer">問題: <span id="question-time">30</span></div>
+                </div>
+            </div>
             <progress id="progress" value="0" max="4"></progress>
         </header>
         
         <main id="main-content">
             <div id="chapter-select" class="screen">
                 <h2>章を選択してください</h2>
-                <button onclick="startChapter('chapter1')">第1章: 基本構文</button>
-                <button onclick="startChapter('chapter2')">第2章: 制御構造</button>
-                <button onclick="startChapter('chapter3')">第3章: 関数</button>
+                <button onclick="startChapter('chapter1')">第1章: 基本構文 (5分)</button>
+                <button onclick="startChapter('chapter2')">第2章: 制御構造 (6分)</button>
+                <button onclick="startChapter('chapter3')">第3章: 関数 (7分)</button>
             </div>
             
             <div id="quiz-screen" class="screen hidden">
@@ -32,15 +43,34 @@
             <div id="result-screen" class="screen hidden">
                 <div id="result-content">
                     <h3 id="result-title"></h3>
-                    <p id="score-display"></p>
+                    <div id="score-breakdown">
+                        <p id="base-score">基本点: 100点</p>
+                        <p id="time-bonus">時間ボーナス: +0点</p>
+                        <p id="combo-bonus">コンボボーナス: +0点</p>
+                        <p id="total-earned">獲得: 100点</p>
+                    </div>
                     <button id="next-btn" onclick="nextQuestion()">次の問題</button>
                     <button id="finish-btn" onclick="finishQuiz()" class="hidden">完了</button>
+                </div>
+            </div>
+            
+            <div id="gameover-screen" class="screen hidden">
+                <div id="gameover-content">
+                    <h2 id="gameover-title">ゲームオーバー</h2>
+                    <p id="gameover-reason"></p>
+                    <p id="final-score">最終スコア: <span>0</span>点</p>
+                    <p id="final-stats"></p>
+                    <button onclick="restartGame()">もう一度挑戦</button>
+                    <button onclick="backToMenu()">メニューに戻る</button>
                 </div>
             </div>
         </main>
     </div>
     
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="config.js"></script>
     <script src="app.js"></script>
 </body>
 </html>

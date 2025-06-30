@@ -28,6 +28,69 @@ header h1 {
     margin-bottom: 20px;
 }
 
+#game-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+#lives {
+    font-size: 1.5rem;
+}
+
+#combo-display {
+    text-align: center;
+    font-weight: bold;
+}
+
+#combo-count {
+    font-size: 2rem;
+    color: #FFD700;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+#combo-text {
+    display: block;
+    font-size: 0.8rem;
+    color: #FFF;
+}
+
+.combo-animation {
+    animation: comboFlash 0.5s ease-out;
+}
+
+@keyframes comboFlash {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); color: #FF6B6B; }
+    100% { transform: scale(1); }
+}
+
+#timers {
+    display: flex;
+    gap: 20px;
+    font-size: 1.1rem;
+}
+
+#chapter-timer, #question-timer {
+    padding: 5px 10px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+}
+
+.timer-warning {
+    background: rgba(255, 0, 0, 0.3) !important;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
 #progress {
     width: 100%;
     height: 20px;
@@ -90,6 +153,7 @@ button:disabled {
     margin: 10px 0;
     padding: 15px;
     background: #f8f9fa;
+    color: #333;
     border: 2px solid transparent;
     border-radius: 10px;
 }
@@ -97,20 +161,77 @@ button:disabled {
 .option:hover {
     border-color: #667eea;
     background: #e3f2fd;
+    color: #333;
 }
 
 .option.selected {
     border-color: #667eea;
     background: #e3f2fd;
+    color: #333;
 }
 
-#result-content {
+#result-content, #gameover-content {
     font-size: 1.2rem;
 }
 
-#score-display {
+#score-breakdown {
+    margin: 20px 0;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    text-align: left;
+}
+
+#score-breakdown p {
+    margin: 5px 0;
+    font-size: 1.1rem;
+}
+
+#base-score {
+    color: #333;
+}
+
+#time-bonus {
+    color: #2196F3;
+}
+
+#combo-bonus {
+    color: #FF9800;
+}
+
+#total-earned {
+    font-weight: bold;
+    font-size: 1.3rem;
+    color: #4CAF50;
+    border-top: 2px solid #ddd;
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
+#final-score {
     font-size: 1.5rem;
     font-weight: bold;
     color: #4CAF50;
     margin: 20px 0;
+}
+
+#gameover-screen {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    color: white;
+}
+
+#gameover-title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+#gameover-reason {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+}
+
+#final-stats {
+    font-size: 1.1rem;
+    margin: 15px 0;
+    opacity: 0.9;
 }

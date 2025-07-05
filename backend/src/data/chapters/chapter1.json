@@ -1,7 +1,6 @@
 {
   "chapterId": "chapter1",
   "title": "第1章: 基本構文",
-  "chapterTimeLimit": 300,
   "missions": [
     {
       "id": "mission1",
@@ -10,7 +9,8 @@
       "correctAnswer": 3,
       "points": 10,
       "timeLimit": 30,
-      "difficulty": "easy"
+      "difficulty": "easy",
+      "type": "choice"
     },
     {
       "id": "mission2",
@@ -19,16 +19,17 @@
       "correctAnswer": 0,
       "points": 10,
       "timeLimit": 30,
-      "difficulty": "easy"
+      "difficulty": "easy",
+      "type": "choice"
     },
     {
       "id": "mission3",
-      "question": "JavaScriptの文字列を表すのは？",
-      "options": ["\"text\"", "'text'", "`text`", "すべて正解"],
-      "correctAnswer": 3,
+      "question": "JavaScriptで文字列を結合する演算子を入力してください",
+      "correctAnswer": "+",
       "points": 10,
       "timeLimit": 30,
-      "difficulty": "easy"
+      "difficulty": "easy",
+      "type": "input"
     },
     {
       "id": "mission4",
@@ -37,7 +38,8 @@
       "correctAnswer": 1,
       "points": 15,
       "timeLimit": 45,
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "type": "choice"
     }
   ]
 }

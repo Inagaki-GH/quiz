@@ -5,12 +5,14 @@ import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
 import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
-import * as wafv2 from 'aws-cdk-lib/aws-wafv2';
 import { Construct } from 'constructs';
 
 export class QuizStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
+
+    // カスタムヘッダーの秘密値
+    const customHeaderValue = 'quiz-app-secret-' + Math.random().toString(36).substring(2, 15);
 
     // DynamoDB Tables
     const chaptersTable = new dynamodb.Table(this, 'ChaptersTable', {
@@ -31,7 +33,8 @@ export class QuizStack extends cdk.Stack {
       code: lambda.Code.fromAsset('../../backend/src'),
       environment: {
         CHAPTERS_TABLE: chaptersTable.tableName,
-        SCORES_TABLE: scoresTable.tableName
+        SCORES_TABLE: scoresTable.tableName,
+        CUSTOM_HEADER_VALUE: customHeaderValue
       }
     });
 
@@ -42,7 +45,8 @@ export class QuizStack extends cdk.Stack {
     const api = new apigateway.RestApi(this, 'QuizApi', {
       defaultCorsPreflightOptions: {
         allowOrigins: apigateway.Cors.ALL_ORIGINS,
-        allowMethods: apigateway.Cors.ALL_METHODS
+        allowMethods: apigateway.Cors.ALL_METHODS,
+        allowHeaders: ['Content-Type', 'X-Quiz-Origin']
       }
     });
 
@@ -57,45 +61,18 @@ export class QuizStack extends cdk.Stack {
       anyMethod: true
     });
 
-    // WAF for API Gateway
-    const apiWebAcl = new wafv2.CfnWebACL(this, 'QuizApiWAF', {
-      scope: 'REGIONAL',
-      defaultAction: { allow: {} },
-      rules: [
-        {
-          name: 'RateLimitRule',
-          priority: 1,
-          statement: {
-            rateBasedStatement: {
-              limit: 100,
-              aggregateKeyType: 'IP'
-            }
-          },
-          action: { block: {} },
-          visibilityConfig: {
-            sampledRequestsEnabled: true,
-            cloudWatchMetricsEnabled: true,
-            metricName: 'RateLimitRule'
-          }
-        }
-      ],
-      visibilityConfig: {
-        sampledRequestsEnabled: true,
-        cloudWatchMetricsEnabled: true,
-        metricName: 'QuizApiWAF'
-      }
-    });
-
-    new wafv2.CfnWebACLAssociation(this, 'QuizApiWAFAssociation', {
-      resourceArn: api.deploymentStage.stageArn,
-      webAclArn: apiWebAcl.attrArn
-    });
-
     // S3 + CloudFront for static hosting
     const websiteBucket = new s3.Bucket(this, 'WebsiteBucket');
 
     const oai = new cloudfront.OriginAccessIdentity(this, 'OAI');
     websiteBucket.grantRead(oai);
+
+    // API Gateway Origin with custom header
+    const apiOrigin = new origins.RestApiOrigin(api, {
+      customHeaders: {
+        'X-Quiz-Origin': customHeaderValue
+      }
+    });
 
     const distribution = new cloudfront.Distribution(this, 'Distribution', {
       defaultRootObject: 'index.html',
@@ -105,6 +82,17 @@ export class QuizStack extends cdk.Stack {
           originAccessIdentity: oai
         }),
         cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED
+      },
+      additionalBehaviors: {
+        '/api/*': {
+          origin: apiOrigin,
+          cachePolicy: cloudfront.CachePolicy.CACHING_DISABLED,
+          originRequestPolicy: cloudfront.OriginRequestPolicy.CORS_S3_ORIGIN,
+          viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+          allowedMethods: cloudfront.AllowedMethods.ALLOW_ALL,
+          cachedMethods: cloudfront.CachedMethods.CACHE_GET_HEAD_OPTIONS,
+          compress: true
+        }
       }
     });
 
@@ -117,6 +105,14 @@ export class QuizStack extends cdk.Stack {
     new cdk.CfnOutput(this, 'CloudFrontDistributionId', { 
       value: distribution.distributionId,
       description: 'CloudFront Distribution ID for cache invalidation'
+    });
+    new cdk.CfnOutput(this, 'CustomHeaderValue', { 
+      value: customHeaderValue,
+      description: 'Custom header value for CloudFront origin requests'
+    });
+    new cdk.CfnOutput(this, 'ChaptersTableName', {
+      value: chaptersTable.tableName,
+      description: 'DynamoDB Chapters Table Name'
     });
   }
 }

@@ -1,0 +1,17 @@
+{
+  "chapterId": "game-settings",
+  "scoring": {
+    "baseScore": 100,
+    "timeMultiplier": 2,
+    "maxComboMultiplier": 10,
+    "maxLives": 3
+  },
+  "timing": {
+    "defaultTimeLimit": 30,
+    "warningThreshold": 10
+  },
+  "gameplay": {
+    "questionsPerChapter": 4,
+    "shuffleQuestions": true
+  }
+}

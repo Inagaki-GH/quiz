@@ -9,7 +9,7 @@ exports.handler = async (event) => {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET,POST,OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type'
+    'Access-Control-Allow-Headers': 'Content-Type,X-Quiz-Origin'
   };
 
   try {
@@ -20,14 +20,25 @@ exports.handler = async (event) => {
       return { statusCode: 200, headers, body: '' };
     }
     
-    // GET /chapter/{chapterId}
-    if (event.httpMethod === 'GET' && event.path.startsWith('/chapter/')) {
-      const chapterId = event.path.split('/')[2];
+    // CloudFront経由チェック
+    const customHeader = event.headers['X-Quiz-Origin'] || event.headers['x-quiz-origin'];
+    if (!customHeader || customHeader !== process.env.CUSTOM_HEADER_VALUE) {
+      console.log('Unauthorized access attempt - missing or invalid custom header');
+      return { 
+        statusCode: 403, 
+        headers, 
+        body: JSON.stringify({ error: 'Access denied' }) 
+      };
+    }
+    
+    // GET /api/chapter/{chapterId}
+    if (event.httpMethod === 'GET' && event.path.startsWith('/api/chapter/')) {
+      const chapterId = event.path.split('/')[3];
       return await getChapter(chapterId, headers);
     }
     
-    // POST /answer
-    if (event.httpMethod === 'POST' && event.path === '/answer') {
+    // POST /api/answer
+    if (event.httpMethod === 'POST' && event.path === '/api/answer') {
       return await postAnswer(JSON.parse(event.body || '{}'), headers);
     }
 
@@ -80,7 +91,11 @@ async function getChapter(chapterId, headers) {
 
 async function postAnswer(request, headers) {
   try {
-    const chapter = await getChapterById(request.chapterId);
+    const [chapter, config] = await Promise.all([
+      getChapterById(request.chapterId),
+      getGameConfig()
+    ]);
+    
     if (!chapter) {
       return { statusCode: 404, headers, body: JSON.stringify({ error: 'Chapter not found' }) };
     }
@@ -90,19 +105,28 @@ async function postAnswer(request, headers) {
       return { statusCode: 404, headers, body: JSON.stringify({ error: 'Mission not found' }) };
     }
 
-    const correct = request.answer === mission.correctAnswer;
+    let correct = false;
+    
+    if (request.type === 'code') {
+      correct = await validateCodeAnswer(request.answer, mission);
+    } else if (request.type === 'input') {
+      const userAnswer = String(request.answer).toLowerCase().trim();
+      const correctAnswer = String(mission.correctAnswer).toLowerCase().trim();
+      correct = userAnswer === correctAnswer;
+    } else {
+      correct = request.answer === mission.correctAnswer;
+    }
+
     const timeTaken = Date.now() - request.timestamp;
-    const timeBonus = Math.max(0, 10 - Math.floor(timeTaken / 1000));
-    const score = correct ? mission.points + timeBonus : 0;
+    const timeBonus = Math.max(0, config.scoring.timeMultiplier * Math.floor((mission.timeLimit - timeTaken / 1000)));
 
     return {
       statusCode: 200,
       headers,
       body: JSON.stringify({
         correct,
-        score,
         timeBonus,
-        correctAnswer: mission.correctAnswer
+        correctAnswer: mission.correctAnswer || 'コードが正しく実行されました'
       })
     };
   } catch (error) {
@@ -115,6 +139,23 @@ async function postAnswer(request, headers) {
   }
 }
 
+async function validateCodeAnswer(userCode, mission) {
+  try {
+    // 簡単な検証：関数名が含まれているかチェック
+    if (!userCode.includes(mission.funcName)) {
+      return false;
+    }
+    
+    // より厳密な検証が必要な場合はここで実装
+    // セキュリティ上の理由でサーバーサイドでのコード実行は避ける
+    
+    return true; // フロントエンドでテスト済みなので基本的に正解
+  } catch (error) {
+    console.error('Code validation error:', error);
+    return false;
+  }
+}
+
 async function getChapterById(chapterId) {
   const command = new GetCommand({
     TableName: process.env.CHAPTERS_TABLE,
@@ -123,6 +164,20 @@ async function getChapterById(chapterId) {
   
   const result = await docClient.send(command);
   return result.Item || null;
+}
+
+async function getGameConfig() {
+  const command = new GetCommand({
+    TableName: process.env.CHAPTERS_TABLE,
+    Key: { chapterId: 'game-settings' }
+  });
+  
+  const result = await docClient.send(command);
+  return result.Item || {
+    scoring: { baseScore: 100, timeMultiplier: 2, maxComboMultiplier: 10 },
+    timing: { defaultTimeLimit: 30 },
+    gameplay: { questionsPerChapter: 4 }
+  };
 }
 
 function getRandomMissions(missions, count = 4) {

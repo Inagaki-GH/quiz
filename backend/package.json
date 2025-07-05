@@ -2,7 +2,8 @@
   "name": "quiz-backend",
   "version": "1.0.0",
   "scripts": {
-    "deploy": "sam build && sam deploy"
+    "deploy": "sam build && sam deploy",
+    "import-config": "node src/data/import-config.js"
   },
   "dependencies": {
     "aws-lambda": "^1.0.7",

@@ -3,10 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1ST ENGINEER</title>
+    <title>Development Preview - 1ST ENGINEER</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        .dev-panel {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            z-index: 9999;
+        }
+        .dev-panel button {
+            margin: 2px;
+            padding: 5px 10px;
+            font-size: 11px;
+        }
+    </style>
 </head>
 <body>
+    <div class="dev-panel">
+        <div>Development Mode</div>
+        <button onclick="showScreen('chapter-select')">章選択</button>
+        <button onclick="showScreen('quiz-screen')">問題画面</button>
+        <button onclick="showScreen('result-screen')">結果画面</button>
+        <button onclick="showScreen('gameover-screen')">ゲーム終了</button>
+        <button onclick="testCodeQuestion()">コード問題テスト</button>
+    </div>
+
     <div id="app">
         <header>
             <h1>1ST ENGINEER</h1>
@@ -24,7 +51,6 @@
             <progress id="progress" value="0" max="4"></progress>
         </header>
         
-        <!-- 右下の円形タイマー -->
         <div id="question-timer" class="hidden">
             <span id="question-time">30</span>
         </div>
@@ -40,7 +66,7 @@
             
             <div id="quiz-screen" class="screen hidden">
                 <div id="question-container">
-                    <h3 id="question-text"></h3>
+                    <h3 id="question-text">サンプル問題: 次の関数を完成させてください</h3>
                     <div id="answer-container">
                         <div id="options-container"></div>
                         <div id="input-container" class="hidden">
@@ -61,7 +87,7 @@
             
             <div id="result-screen" class="screen hidden">
                 <div id="result-content">
-                    <h3 id="result-title"></h3>
+                    <h3 id="result-title">正解！</h3>
                     <button id="next-btn" onclick="nextQuestion()">次の問題</button>
                     <button id="finish-btn" onclick="finishQuiz()" class="hidden">完了</button>
                 </div>
@@ -70,10 +96,10 @@
             <div id="gameover-screen" class="screen hidden">
                 <div id="gameover-content">
                     <h2 id="gameover-title">GAME OVER</h2>
-                    <p id="gameover-reason"></p>
+                    <p id="gameover-reason">テスト用メッセージ</p>
                     <div id="final-results">
-                        <p id="final-score">Score <span>0</span></p>
-                        <p id="final-stats"></p>
+                        <p id="final-score">Score <span>1500</span></p>
+                        <p id="final-stats">正解数: 4 | 最大コンボ: 3</p>
                     </div>
                     <button onclick="restartGame()">もう一度挑戦</button>
                     <button onclick="backToMenu()">メニューに戻る</button>
@@ -91,7 +117,38 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <script src="config.js"></script>
+    <script>
+        // Mock config for development
+        window.API_BASE_URL = '/api';
+        
+        // Mock data for testing
+        const mockChapter = {
+            chapterId: 'chapter1',
+            missions: [
+                {
+                    id: 'test1',
+                    type: 'code',
+                    question: 'テスト用のコード問題です',
+                    funcName: 'add',
+                    template: 'exports.add = function(a, b) {\n    // ここに実装\n};',
+                    tests: [
+                        { args: [1, 2], expected: 3 },
+                        { args: [5, 3], expected: 8 }
+                    ],
+                    timeLimit: 60
+                }
+            ]
+        };
+        
+        // Test function for code questions
+        function testCodeQuestion() {
+            currentChapter = mockChapter;
+            currentMissions = mockChapter.missions;
+            currentMissionIndex = 0;
+            showQuestion();
+            showScreen('quiz-screen');
+        }
+    </script>
     <script src="app.js"></script>
 </body>
 </html>

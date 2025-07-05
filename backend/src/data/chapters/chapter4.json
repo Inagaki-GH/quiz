@@ -1,0 +1,53 @@
+{
+  "chapterId": "chapter4",
+  "title": "第4章: プログラミング実践",
+  "missions": [
+    {
+      "id": "mission1",
+      "question": "引数で受け取った数値を2倍にして返すdouble関数を作成してください",
+      "funcName": "double",
+      "tests": [
+        {"args": [5], "expected": 10},
+        {"args": [0], "expected": 0},
+        {"args": [-3], "expected": -6},
+        {"args": [2.5], "expected": 5}
+      ],
+      "template": "exports.double = function(num) {\n  // ここにコードを書いてください\n  \n};",
+      "points": 20,
+      "timeLimit": 120,
+      "difficulty": "medium",
+      "type": "code"
+    },
+    {
+      "id": "mission2",
+      "question": "配列の要素の合計を返すsum関数を作成してください",
+      "funcName": "sum",
+      "tests": [
+        {"args": [[1, 2, 3]], "expected": 6},
+        {"args": [[]], "expected": 0},
+        {"args": [[-1, 1, -1, 1]], "expected": 0},
+        {"args": [[10, 20, 30]], "expected": 60}
+      ],
+      "template": "exports.sum = function(arr) {\n  // ここにコードを書いてください\n  \n};",
+      "points": 25,
+      "timeLimit": 150,
+      "difficulty": "medium",
+      "type": "code"
+    },
+    {
+      "id": "mission3",
+      "question": "FizzBuzz問題：1からnまでの数で、3の倍数なら'Fizz'、5の倍数なら'Buzz'、両方なら'FizzBuzz'、それ以外は数値を返す配列を作成してください",
+      "funcName": "fizzBuzz",
+      "tests": [
+        {"args": [15], "expected": [1,2,"Fizz",4,"Buzz","Fizz",7,8,"Fizz","Buzz",11,"Fizz",13,14,"FizzBuzz"]},
+        {"args": [5], "expected": [1,2,"Fizz",4,"Buzz"]},
+        {"args": [3], "expected": [1,2,"Fizz"]}
+      ],
+      "template": "exports.fizzBuzz = function(n) {\n  // ここにコードを書いてください\n  \n};",
+      "points": 30,
+      "timeLimit": 180,
+      "difficulty": "hard",
+      "type": "code"
+    }
+  ]
+}

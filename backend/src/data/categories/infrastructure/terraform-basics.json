@@ -1,0 +1,80 @@
+{
+  "chapterId": "terraform-basics",
+  "title": "Terraform編: Infrastructure as Code",
+  "description": "Terraformを使ったインフラ構築の基本について学習します",
+  "category": "infrastructure",
+  "order": 2,
+  "status": "beta",
+  "missions": [
+    {
+      "id": "terraform-001",
+      "type": "choice",
+      "question": "Terraformの設定ファイルの拡張子はどれですか？",
+      "options": [".tf", ".terraform", ".hcl", ".yaml"],
+      "correctAnswer": 0
+    },
+    {
+      "id": "terraform-002",
+      "type": "choice",
+      "question": "Terraformでインフラの現在の状態を確認するコマンドはどれですか？",
+      "options": ["terraform show", "terraform plan", "terraform state", "terraform status"],
+      "correctAnswer": 0
+    },
+    {
+      "id": "terraform-003",
+      "type": "choice",
+      "question": "Terraformで変更内容を事前確認するコマンドはどれですか？",
+      "options": ["terraform check", "terraform plan", "terraform preview", "terraform diff"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "terraform-004",
+      "type": "choice",
+      "question": "Terraformで実際にインフラを作成・変更するコマンドはどれですか？",
+      "options": ["terraform create", "terraform deploy", "terraform apply", "terraform build"],
+      "correctAnswer": 2
+    },
+    {
+      "id": "terraform-005",
+      "type": "choice",
+      "question": "Terraformの状態ファイルのデフォルト名はどれですか？",
+      "options": ["terraform.state", "terraform.tfstate", "state.tf", "tfstate.json"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "terraform-006",
+      "type": "choice",
+      "question": "Terraformでプロバイダーを指定するブロックはどれですか？",
+      "options": ["provider", "resource", "data", "module"],
+      "correctAnswer": 0
+    },
+    {
+      "id": "terraform-007",
+      "type": "choice",
+      "question": "Terraformでリソースを定義するブロックはどれですか？",
+      "options": ["provider", "resource", "variable", "output"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "terraform-008",
+      "type": "choice",
+      "question": "Terraformで変数を定義するブロックはどれですか？",
+      "options": ["var", "variable", "input", "param"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "terraform-009",
+      "type": "choice",
+      "question": "Terraformでインフラを削除するコマンドはどれですか？",
+      "options": ["terraform delete", "terraform remove", "terraform destroy", "terraform clean"],
+      "correctAnswer": 2
+    },
+    {
+      "id": "terraform-010",
+      "type": "choice",
+      "question": "Terraformの設定言語の名前はどれですか？",
+      "options": ["HCL", "JSON", "YAML", "TOML"],
+      "correctAnswer": 0
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "chapterId": "code-reading-basics",
+  "title": "コードリーディング編: 基礎",
+  "description": "コードを読んで動作を理解する問題",
+  "category": "basic",
+  "order": 5,
+  "status": "draft",
+  "missions": [
+    {
+      "id": "reading-001",
+      "type": "choice",
+      "question": "次のコードの実行結果は何ですか？\n\n```javascript\nlet x = 5;\nlet y = 3;\nconsole.log(x + y * 2);\n```",
+      "options": ["11", "16", "13", "10"],
+      "correctAnswer": 0
+    },
+    {
+      "id": "reading-002",
+      "type": "input",
+      "question": "次のコードの実行結果を入力してください：\n\n```javascript\nlet arr = [1, 2, 3];\nconsole.log(arr.length);\n```",
+      "correctAnswer": "3"
+    },
+    {
+      "id": "reading-003",
+      "type": "choice",
+      "question": "次のHTML/CSSの表示結果はどうなりますか？\n\n```html\n<div class=\"box\">Hello</div>\n```\n\n```css\n.box {\n  color: red;\n  font-size: 20px;\n}\n```",
+      "options": ["黒い文字でHello", "赤い文字でHello（20px）", "青い文字でHello", "表示されない"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "reading-004",
+      "type": "input",
+      "question": "次の関数を呼び出した結果を入力してください：\n\n```javascript\nfunction multiply(a, b) {\n  return a * b;\n}\n\nconsole.log(multiply(4, 7));\n```",
+      "correctAnswer": "28"
+    },
+    {
+      "id": "reading-005",
+      "type": "choice",
+      "question": "次のループの実行回数は何回ですか？\n\n```javascript\nfor (let i = 0; i < 5; i++) {\n  console.log(i);\n}\n```",
+      "options": ["4回", "5回", "6回", "無限ループ"],
+      "correctAnswer": 1
+    }
+  ]
+}

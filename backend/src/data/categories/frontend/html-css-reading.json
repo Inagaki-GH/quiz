@@ -1,0 +1,77 @@
+{
+  "chapterId": "html-css-reading",
+  "title": "HTML/CSS編: コードリーディング",
+  "description": "HTML/CSSコードを読んで動作を理解する問題",
+  "category": "frontend",
+  "order": 5,
+  "status": "beta",
+  "missions": [
+    {
+      "id": "reading-html-001",
+      "type": "choice",
+      "question": "次のHTMLコードで、実際にブラウザに表示される要素数は何個ですか？\n\n```html\n<div>\n  <p>段落1</p>\n  <!-- <p>段落2</p> -->\n  <span style=\"display: none;\">非表示</span>\n  <p>段落3</p>\n</div>\n```",
+      "options": ["1個", "2個", "3個", "4個"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "reading-css-001",
+      "type": "choice",
+      "question": "次のCSS/HTMLコードで、最終的に適用されるmargin-topの値は何pxですか？\n\n```html\n<div class=\"box special\">内容</div>\n```\n\n```css\n.box { margin-top: 10px; }\n.special { margin-top: 20px !important; }\ndiv { margin-top: 30px; }\n```",
+      "options": ["10px", "20px", "30px", "50px"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "reading-css-002",
+      "type": "input",
+      "question": "次のCSSで、.childの実際の幅は何pxになりますか？\n\n```css\n.parent {\n  width: 200px;\n  padding: 10px;\n}\n.child {\n  width: 50%;\n  margin: 5px;\n}\n```",
+      "correctAnswer": "100"
+    },
+    {
+      "id": "reading-html-002",
+      "type": "choice",
+      "question": "次のHTMLフォームで、送信時にサーバーに送られるデータはどれですか？\n\n```html\n<form>\n  <input type=\"text\" name=\"user\" value=\"田中\">\n  <input type=\"text\" value=\"山田\">\n  <input type=\"hidden\" name=\"id\" value=\"123\">\n  <button type=\"submit\">送信</button>\n</form>\n```",
+      "options": ["user=田中のみ", "user=田中, id=123", "user=田中, 山田, id=123", "何も送信されない"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "reading-css-003",
+      "type": "choice",
+      "question": "次のCSS/HTMLコードで、pタグの最終的な色は何色になりますか？\n\n```html\n<div id=\"container\" class=\"wrapper\">\n  <p class=\"text\">テキスト</p>\n</div>\n```\n\n```css\n#container p { color: red; }\n.wrapper .text { color: blue; }\np.text { color: green; }\n```",
+      "options": ["赤", "青", "緑", "黒"],
+      "correctAnswer": 0
+    },
+    {
+      "id": "reading-html-003",
+      "type": "input",
+      "question": "次のHTMLで、JavaScriptのalert()が実行される回数は何回ですか？\n\n```html\n<div onclick=\"alert('div')\">\n  <button onclick=\"alert('button')\">クリック</button>\n</div>\n```\n\n※ボタンをクリックした場合",
+      "correctAnswer": "2"
+    },
+    {
+      "id": "reading-css-004",
+      "type": "choice",
+      "question": "次のCSS Flexboxコードで、アイテムの配置はどうなりますか？\n\n```css\n.container {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n```",
+      "options": ["左寄せ・上寄せ", "中央・中央", "両端揃え・中央", "右寄せ・下寄せ"],
+      "correctAnswer": 2
+    },
+    {
+      "id": "reading-html-004",
+      "type": "choice",
+      "question": "次のHTMLで、CSSセレクタ「li:nth-child(2n)」で選択される要素はどれですか？\n\n```html\n<ul>\n  <li>A</li>\n  <li>B</li>\n  <li>C</li>\n  <li>D</li>\n</ul>\n```",
+      "options": ["A, C", "B, D", "A, B", "C, D"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "reading-css-005",
+      "type": "input",
+      "question": "次のCSSで、z-indexが最も高い要素のz-index値を入力してください：\n\n```css\n.layer1 { z-index: 10; position: relative; }\n.layer2 { z-index: 5; position: absolute; }\n.layer3 { z-index: auto; position: static; }\n.layer4 { z-index: 999; position: fixed; }\n```",
+      "correctAnswer": "999"
+    },
+    {
+      "id": "reading-css-006",
+      "type": "choice",
+      "question": "次のCSS Gridコードで、グリッドアイテムの配置はどうなりますか？\n\n```css\n.grid {\n  display: grid;\n  grid-template-columns: 1fr 2fr 1fr;\n  gap: 10px;\n}\n```",
+      "options": ["3列等幅", "1:2:1の比率で3列", "2列のみ", "1列のみ"],
+      "correctAnswer": 1
+    }
+  ]
+}

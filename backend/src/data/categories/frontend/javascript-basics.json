@@ -3,7 +3,7 @@
   "title": "JavaScript編: 基本構文",
   "description": "JavaScriptの変数、関数、制御構造について学習します",
   "category": "frontend",
-  "order": 3,
+  "order": 4,
   "status": "beta",
   "missions": [
     {

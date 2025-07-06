@@ -109,6 +109,51 @@ header h1 {
     100% { transform: scale(1); }
 }
 
+
+
+
+
+/* 背景エフェクト - 図書館風 */
+.combo-bg-effect {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.combo-bg-effect.level-3 {
+    background: radial-gradient(circle at center, rgba(205, 133, 63, 0.08) 0%, transparent 70%);
+    animation: pulseWarm 4s ease-in-out infinite;
+}
+
+.combo-bg-effect.level-4 {
+    background: radial-gradient(circle at center, rgba(160, 82, 45, 0.12) 0%, transparent 70%);
+    animation: pulseRich 3s ease-in-out infinite;
+}
+
+.combo-bg-effect.level-5 {
+    background: radial-gradient(circle at center, rgba(139, 69, 19, 0.15) 0%, transparent 70%);
+    animation: pulseElegant 2.5s ease-in-out infinite;
+}
+
+@keyframes pulseWarm {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 0.4; }
+}
+
+@keyframes pulseRich {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.5; }
+}
+
+@keyframes pulseElegant {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.6; }
+}
+
 #total-score-display {
     text-align: center;
     font-weight: bold;
@@ -118,6 +163,40 @@ header h1 {
     padding: 8px 15px;
     border-radius: 8px;
     border: 1px solid rgba(160, 82, 45, 0.3);
+    position: relative;
+}
+
+/* スコア加算ポップアップ */
+.score-popup {
+    position: absolute;
+    top: -10px;
+    right: -20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: rgba(44, 24, 16, 1);
+    text-shadow: 1px 1px 2px rgba(245, 222, 179, 0.8);
+    pointer-events: none;
+    z-index: 1000;
+    animation: scorePopup 2s ease-out forwards;
+}
+
+@keyframes scorePopup {
+    0% {
+        opacity: 0;
+        transform: translateY(0) scale(0.8);
+    }
+    20% {
+        opacity: 1;
+        transform: translateY(-20px) scale(1.2);
+    }
+    80% {
+        opacity: 1;
+        transform: translateY(-40px) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-60px) scale(0.9);
+    }
 }
 
 /* タイマーを右下に円形で配置 */
@@ -175,7 +254,7 @@ header h1 {
 }
 
 #progress::-webkit-progress-value {
-    background: linear-gradient(90deg, rgba(124, 119, 41, 1), rgba(211, 134, 18, 1));
+    background: linear-gradient(90deg, rgba(211, 134, 18, 0.8), rgba(211, 134, 18, 1));
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(34, 139, 34, 0.4);
 }
@@ -534,4 +613,29 @@ footer a {
     color: rgba(245, 222, 179, 1);
     border: 1px solid rgba(160, 82, 45, 0.5);
     border-radius: 15px;
+}
+
+/* コードブロックスタイル */
+#question-text pre {
+    background: rgba(44, 24, 16, 0.1);
+    border: 1px solid rgba(139, 69, 19, 0.3);
+    border-radius: 8px;
+    padding: 15px;
+    margin: 15px 0;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    text-align: left;
+    color: rgba(44, 24, 16, 0.9);
+}
+
+#question-text code {
+    background: rgba(44, 24, 16, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    color: rgba(44, 24, 16, 0.9);
 }

@@ -234,8 +234,15 @@ function updateComboDisplay() {
     }
 }
 
-function updateTotalScore(newScore = null) {
+
+
+function updateTotalScore(newScore = null, addedPoints = null) {
     if (newScore !== null) {
+        // 加算ポイントを表示
+        if (addedPoints && addedPoints > 0) {
+            showScorePopup(addedPoints);
+        }
+        
         // カウントアップアニメーション
         anime({
             targets: { score: totalScore },
@@ -253,6 +260,22 @@ function updateTotalScore(newScore = null) {
     } else {
         document.getElementById('total-score').textContent = totalScore;
     }
+}
+
+function showScorePopup(points) {
+    const scoreDisplay = document.getElementById('total-score-display');
+    const popup = document.createElement('div');
+    popup.className = 'score-popup';
+    popup.textContent = `+${points}`;
+    
+    scoreDisplay.appendChild(popup);
+    
+    // 2秒後に削除
+    setTimeout(() => {
+        if (popup.parentNode) {
+            popup.parentNode.removeChild(popup);
+        }
+    }, 2000);
 }
 
 function showQuestion() {
@@ -327,18 +350,12 @@ function showQuestion() {
     console.log('Timer setup - timeLimit:', timeLimit, 'for type:', mission.type);
     startQuestionTimer(timeLimit);
     
-    // 質問テキストをタイプライター効果で表示
+    // 質問テキストを表示
     const questionElement = document.getElementById('question-text');
-    questionElement.textContent = '';
-    anime({
-        targets: questionElement,
-        innerHTML: [0, mission.question.length],
-        duration: 1200,
-        easing: 'linear',
-        update: function(anim) {
-            questionElement.textContent = mission.question.substring(0, Math.floor(anim.progress * mission.question.length / 100));
-        }
-    });
+    const processedQuestion = parseMarkdown(mission.question);
+    
+    console.log('Setting question HTML:', processedQuestion);
+    questionElement.innerHTML = processedQuestion;
     
     // 問題タイプに応じて表示切り替え
     console.log('Checking mission type...');
@@ -766,7 +783,7 @@ async function submitAnswer() {
         const comboBonus = result.correct ? baseScore * (comboMultiplier - 1) : 0;
         const totalEarned = baseScore + timeBonus + comboBonus;
         
-        updateTotalScore(totalScore + totalEarned);
+        updateTotalScore(totalScore + totalEarned, totalEarned);
         updateComboDisplay();
         
         showResult({ correct: result.correct });
@@ -952,6 +969,36 @@ async function loadChaptersList() {
 let allChapters = [];
 let gameConfig = null;
 
+// HTMLエスケープ関数
+function escapeHtml(text) {
+    return text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+// マークダウンパーシング関数
+function parseMarkdown(text) {
+    console.log('Original text:', text);
+    
+    let result = text
+        // コードブロックを先に処理（HTMLエスケープあり）
+        .replace(/```([\w]*)?\n([\s\S]*?)```/g, function(match, lang, code) {
+            return '<pre><code class="language-' + (lang || '') + '">' + escapeHtml(code) + '</code></pre>';
+        })
+        // インラインコード
+        .replace(/`([^`]+)`/g, function(match, code) {
+            return '<code>' + escapeHtml(code) + '</code>';
+        })
+        // 改行を<br>に変換
+        .replace(/\n/g, '<br>');
+    
+    console.log('Parsed result:', result);
+    return result;
+}
+
 function getTimeLimitForType(questionType) {
     if (gameConfig && gameConfig.timing && gameConfig.timing.timeLimitByType) {
         return gameConfig.timing.timeLimitByType[questionType] || gameConfig.timing.defaultTimeLimit || 30;
@@ -987,11 +1034,12 @@ function displayCategorySelection(chapters, container) {
         'frontend': '🌐 フロントエンド',
         'backend': '💾 バックエンド',
         'database': '🗄️ データベース',
+        'infrastructure': '☁️ インフラ',
         'other': '📚 その他'
     };
     
     // カテゴリの表示順序
-    const categoryOrder = ['basic', 'frontend', 'backend', 'database', 'other'];
+    const categoryOrder = ['basic', 'frontend', 'backend', 'database', 'infrastructure', 'other'];
     
     categoryOrder.forEach(category => {
         if (!categories[category]) return;

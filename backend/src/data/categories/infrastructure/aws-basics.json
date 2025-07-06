@@ -1,0 +1,80 @@
+{
+  "chapterId": "aws-basics",
+  "title": "AWS編: 基礎サービス",
+  "description": "AWSの主要サービスと基本概念について学習します",
+  "category": "infrastructure",
+  "order": 1,
+  "status": "beta",
+  "missions": [
+    {
+      "id": "aws-001",
+      "type": "choice",
+      "question": "AWSのコンピューティングサービスはどれですか？",
+      "options": ["S3", "EC2", "RDS", "CloudFront"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "aws-002",
+      "type": "choice",
+      "question": "AWSのオブジェクトストレージサービスはどれですか？",
+      "options": ["EBS", "EFS", "S3", "Glacier"],
+      "correctAnswer": 2
+    },
+    {
+      "id": "aws-003",
+      "type": "choice",
+      "question": "AWSのリレーショナルデータベースサービスはどれですか？",
+      "options": ["DynamoDB", "RDS", "ElastiCache", "Redshift"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "aws-004",
+      "type": "choice",
+      "question": "AWSのCDN（コンテンツ配信ネットワーク）サービスはどれですか？",
+      "options": ["Route 53", "CloudFront", "API Gateway", "Load Balancer"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "aws-005",
+      "type": "choice",
+      "question": "AWSのサーバーレスコンピューティングサービスはどれですか？",
+      "options": ["EC2", "ECS", "Lambda", "Batch"],
+      "correctAnswer": 2
+    },
+    {
+      "id": "aws-006",
+      "type": "choice",
+      "question": "AWSのVPC内でインターネットアクセスを提供するコンポーネントはどれですか？",
+      "options": ["NAT Gateway", "Internet Gateway", "VPN Gateway", "Direct Connect"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "aws-007",
+      "type": "choice",
+      "question": "AWSのIAMで、ユーザーに権限を付与する方法はどれですか？",
+      "options": ["ポリシーのアタッチ", "ロールの作成", "グループの作成", "すべて正しい"],
+      "correctAnswer": 3
+    },
+    {
+      "id": "aws-008",
+      "type": "choice",
+      "question": "AWSのEC2インスタンスタイプで、汎用的な用途に適しているのはどれですか？",
+      "options": ["t3.micro", "c5.large", "r5.xlarge", "m5.large"],
+      "correctAnswer": 3
+    },
+    {
+      "id": "aws-009",
+      "type": "choice",
+      "question": "AWSのS3バケットのデフォルトアクセス権限はどれですか？",
+      "options": ["パブリック読み取り", "パブリック読み書き", "プライベート", "認証ユーザーのみ"],
+      "correctAnswer": 2
+    },
+    {
+      "id": "aws-010",
+      "type": "choice",
+      "question": "AWSの料金体系で、使用した分だけ支払う方式を何と呼びますか？",
+      "options": ["従量課金", "定額課金", "前払い課金", "後払い課金"],
+      "correctAnswer": 0
+    }
+  ]
+}

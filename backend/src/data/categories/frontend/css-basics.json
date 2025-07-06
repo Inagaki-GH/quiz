@@ -3,15 +3,15 @@
   "title": "CSS編: スタイリング基礎",
   "description": "CSSの基本的なセレクタとプロパティについて学習します",
   "category": "frontend",
-  "order": 2,
+  "order": 3,
   "status": "beta",
   "missions": [
     {
       "id": "css-001",
       "type": "choice",
-      "question": "要素の背景色を設定するCSSプロパティはどれですか？",
-      "options": ["color", "background-color", "bg-color", "background"],
-      "correctAnswer": 1
+      "question": "CSSでコメントアウトする正しい記法はどれですか？",
+      "options": ["// コメント", "<!-- コメント -->", "/* コメント */", "# コメント"],
+      "correctAnswer": 2
     },
     {
       "id": "css-002",
@@ -19,6 +19,132 @@
       "question": "CSSでテキストの色を変更するプロパティはどれですか？",
       "options": ["text-color", "font-color", "color", "foreground"],
       "correctAnswer": 2
+    },
+    {
+      "id": "css-003",
+      "type": "choice",
+      "question": "要素の背景色を設定するCSSプロパティはどれですか？",
+      "options": ["color", "background-color", "bg-color", "background"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "css-004",
+      "type": "choice",
+      "question": "要素の外側の余白を設定するプロパティはどれですか？",
+      "options": ["padding", "margin", "border", "spacing"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "css-005",
+      "type": "choice",
+      "question": "要素の内側の余白を設定するプロパティはどれですか？",
+      "options": ["margin", "padding", "border", "inner-space"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "css-006",
+      "type": "choice",
+      "question": "要素の境界線を設定するプロパティはどれですか？",
+      "options": ["outline", "border", "frame", "edge"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "css-007",
+      "type": "choice",
+      "question": "ボックスサイズの計算方法を変更するプロパティはどれですか？",
+      "options": ["box-model", "box-sizing", "size-mode", "calc-mode"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "css-008",
+      "type": "choice",
+      "question": "子要素を選択する結合子はどれですか？",
+      "options": [">", "+", "~", "*"],
+      "correctAnswer": 0
+    },
+    {
+      "id": "css-009",
+      "type": "choice",
+      "question": "マウスホバー時のスタイルを指定する疑似クラスはどれですか？",
+      "options": [":active", ":hover", ":focus", ":visited"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "css-010",
+      "type": "choice",
+      "question": "フォントサイズを設定するプロパティはどれですか？",
+      "options": ["text-size", "font-size", "size", "font-scale"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "css-011",
+      "type": "choice",
+      "question": "Webフォントを読み込むCSSルールはどれですか？",
+      "options": ["@import", "@font-face", "@web-font", "@load-font"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "css-012",
+      "type": "choice",
+      "question": "Font Awesomeなどのアイコンフォントで使用される疑似要素はどれですか？",
+      "options": ["::after", "::before", "::icon", "::content"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "css-013",
+      "type": "choice",
+      "question": "リストのマーカー（箇条書きの点）を非表示にするプロパティ値はどれですか？",
+      "options": ["list-style: hidden", "list-style-type: none", "list-marker: none", "bullet: none"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "css-014",
+      "type": "choice",
+      "question": "リセットCSSの主な目的は何ですか？",
+      "options": ["デザインを美しくする", "ブラウザ間のスタイル差異を統一する", "読み込み速度を向上させる", "SEOを改善する"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "css-015",
+      "type": "choice",
+      "question": "CSSで色を指定する方法として正しくないものはどれですか？",
+      "options": ["#FF0000", "rgb(255, 0, 0)", "red", "color(255, 0, 0)"],
+      "correctAnswer": 3
+    },
+    {
+      "id": "css-016",
+      "type": "choice",
+      "question": "背景画像を設定するプロパティはどれですか？",
+      "options": ["background-image", "bg-image", "image", "background-src"],
+      "correctAnswer": 0
+    },
+    {
+      "id": "css-017",
+      "type": "choice",
+      "question": "margin: 10px 20px; の意味は何ですか？",
+      "options": ["上下10px、左右20px", "上20px、下10px", "左10px、右20px", "全方向15px"],
+      "correctAnswer": 0
+    },
+    {
+      "id": "css-018",
+      "type": "choice",
+      "question": "border-radius プロパティの効果は何ですか？",
+      "options": ["境界線の太さを変更", "境界線の色を変更", "角を丸くする", "境界線のスタイルを変更"],
+      "correctAnswer": 2
+    },
+    {
+      "id": "css-019",
+      "type": "choice",
+      "question": "隣接する兄弟要素を選択する結合子はどれですか？",
+      "options": [">", "+", "~", ","],
+      "correctAnswer": 1
+    },
+    {
+      "id": "css-020",
+      "type": "choice",
+      "question": "フォントの太さを設定するプロパティはどれですか？",
+      "options": ["font-weight", "font-bold", "text-weight", "font-thickness"],
+      "correctAnswer": 0
     }
   ]
 }

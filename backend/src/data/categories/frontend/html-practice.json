@@ -1,0 +1,116 @@
+{
+  "chapterId": "html-practice",
+  "title": "HTML編: 実践",
+  "description": "HTMLの実践的なコーディング問題",
+  "category": "frontend",
+  "order": 2,
+  "status": "beta",
+  "missions": [
+    {
+      "id": "html-code-001",
+      "type": "code",
+      "question": "「Hello World」という見出しを含むHTMLページを作成してください",
+      "template": "<!DOCTYPE html>\n<html>\n<head>\n  <title>My Page</title>\n</head>\n<body>\n  <!-- ここに見出しを追加 -->\n</body>\n</html>",
+      "tests": [
+        {"check": "hasElement", "selector": "h1", "description": "h1タグが存在する"},
+        {"check": "textContent", "selector": "h1", "expected": "Hello World", "description": "見出しのテキストが正しい"}
+      ]
+    },
+    {
+      "id": "html-code-002",
+      "type": "code",
+      "question": "「プログラミング学習」へのリンクを作成してください（href属性は#とする）",
+      "template": "<!DOCTYPE html>\n<html>\n<body>\n  <!-- ここにリンクを追加 -->\n</body>\n</html>",
+      "tests": [
+        {"check": "hasElement", "selector": "a", "description": "aタグが存在する"},
+        {"check": "textContent", "selector": "a", "expected": "プログラミング学習", "description": "リンクテキストが正しい"},
+        {"check": "attribute", "selector": "a", "attribute": "href", "expected": "#", "description": "href属性が正しい"}
+      ]
+    },
+    {
+      "id": "html-code-003",
+      "type": "code",
+      "question": "段落「これは段落です」を作成してください",
+      "template": "<!DOCTYPE html>\n<html>\n<body>\n  <!-- ここに段落を追加 -->\n</body>\n</html>",
+      "tests": [
+        {"check": "hasElement", "selector": "p", "description": "pタグが存在する"},
+        {"check": "textContent", "selector": "p", "expected": "これは段落です", "description": "段落のテキストが正しい"}
+      ]
+    },
+    {
+      "id": "html-code-004",
+      "type": "code",
+      "question": "「重要」という文字を強調表示してください",
+      "template": "<!DOCTYPE html>\n<html>\n<body>\n  <p>この文字は<!-- ここに強調タグを追加 -->です。</p>\n</body>\n</html>",
+      "tests": [
+        {"check": "hasElement", "selector": "strong", "description": "strongタグが存在する"},
+        {"check": "textContent", "selector": "strong", "expected": "重要", "description": "強調テキストが正しい"}
+      ]
+    },
+    {
+      "id": "html-code-005",
+      "type": "code",
+      "question": "番号なしリストで「HTML」「CSS」「JavaScript」を作成してください",
+      "template": "<!DOCTYPE html>\n<html>\n<body>\n  <!-- ここにリストを追加 -->\n</body>\n</html>",
+      "tests": [
+        {"check": "hasElement", "selector": "ul", "description": "ulタグが存在する"},
+        {"check": "elementCount", "selector": "li", "expected": 3, "description": "liタグが3個存在する"},
+        {"check": "textContent", "selector": "li:nth-child(1)", "expected": "HTML", "description": "1番目のリスト項目が正しい"},
+        {"check": "textContent", "selector": "li:nth-child(2)", "expected": "CSS", "description": "2番目のリスト項目が正しい"},
+        {"check": "textContent", "selector": "li:nth-child(3)", "expected": "JavaScript", "description": "3番目のリスト項目が正しい"}
+      ]
+    },
+    {
+      "id": "html-code-006",
+      "type": "code",
+      "question": "番号付きリストで「学習」「練習」「実践」を作成してください",
+      "template": "<!DOCTYPE html>\n<html>\n<body>\n  <!-- ここに番号付きリストを追加 -->\n</body>\n</html>",
+      "tests": [
+        {"check": "hasElement", "selector": "ol", "description": "olタグが存在する"},
+        {"check": "elementCount", "selector": "li", "expected": 3, "description": "liタグが3個存在する"},
+        {"check": "textContent", "selector": "li:nth-child(1)", "expected": "学習", "description": "1番目のリスト項目が正しい"}
+      ]
+    },
+    {
+      "id": "html-code-007",
+      "type": "code",
+      "question": "divタグでコンテンツをグループ化し、その中に「メインコンテンツ」という段落を作成してください",
+      "template": "<!DOCTYPE html>\n<html>\n<body>\n  <!-- ここにdivとpタグを追加 -->\n</body>\n</html>",
+      "tests": [
+        {"check": "hasElement", "selector": "div", "description": "divタグが存在する"},
+        {"check": "hasElement", "selector": "div p", "description": "div内にpタグが存在する"},
+        {"check": "textContent", "selector": "div p", "expected": "メインコンテンツ", "description": "段落のテキストが正しい"}
+      ]
+    },
+    {
+      "id": "html-code-008",
+      "type": "code",
+      "question": "「特別」という文字をspanタグで囲んでください",
+      "template": "<!DOCTYPE html>\n<html>\n<body>\n  <p>この文字は<!-- ここにspanタグを追加 -->です。</p>\n</body>\n</html>",
+      "tests": [
+        {"check": "hasElement", "selector": "span", "description": "spanタグが存在する"},
+        {"check": "textContent", "selector": "span", "expected": "特別", "description": "spanのテキストが正しい"}
+      ]
+    },
+    {
+      "id": "html-code-009",
+      "type": "code",
+      "question": "改行タグを使って2行のテキストを作成してください（1行目：「1行目」、2行目：「2行目」）",
+      "template": "<!DOCTYPE html>\n<html>\n<body>\n  <p><!-- ここに改行を含むテキストを追加 --></p>\n</body>\n</html>",
+      "tests": [
+        {"check": "hasElement", "selector": "br", "description": "brタグが存在する"},
+        {"check": "textIncludes", "selector": "p", "expected": "1行目", "description": "1行目のテキストが含まれる"},
+        {"check": "textIncludes", "selector": "p", "expected": "2行目", "description": "2行目のテキストが含まれる"}
+      ]
+    },
+    {
+      "id": "html-code-010",
+      "type": "code",
+      "question": "水平線（hr）を使ってコンテンツを区切ってください",
+      "template": "<!DOCTYPE html>\n<html>\n<body>\n  <p>上のコンテンツ</p>\n  <!-- ここに水平線を追加 -->\n  <p>下のコンテンツ</p>\n</body>\n</html>",
+      "tests": [
+        {"check": "hasElement", "selector": "hr", "description": "hrタグが存在する"}
+      ]
+    }
+  ]
+}

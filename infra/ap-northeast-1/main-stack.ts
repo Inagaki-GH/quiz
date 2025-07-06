@@ -67,6 +67,39 @@ export class QuizStack extends cdk.Stack {
     const oai = new cloudfront.OriginAccessIdentity(this, 'OAI');
     websiteBucket.grantRead(oai);
 
+    // CloudFront Function for URL rewriting and access control
+    const urlRewriteFunction = new cloudfront.Function(this, 'UrlRewriteFunction', {
+      code: cloudfront.FunctionCode.fromInline(`
+function handler(event) {
+    var request = event.request;
+    var uri = request.uri;
+    
+    // Block root access and directory listing
+    if (uri === '/' || uri === '') {
+        return {
+            statusCode: 403,
+            statusDescription: 'Forbidden',
+            headers: {
+                'content-type': { value: 'text/html' }
+            },
+            body: '<html><body><h1>403 Forbidden</h1><p>Access denied.</p></body></html>'
+        };
+    }
+    
+    // /quiz -> /quiz/index.html
+    if (uri === '/quiz') {
+        request.uri = '/quiz/index.html';
+    }
+    // /quiz/ -> /quiz/index.html
+    else if (uri === '/quiz/') {
+        request.uri = '/quiz/index.html';
+    }
+    
+    return request;
+}
+      `)
+    });
+
     // API Gateway Origin with custom header
     const apiOrigin = new origins.RestApiOrigin(api, {
       customHeaders: {
@@ -75,13 +108,16 @@ export class QuizStack extends cdk.Stack {
     });
 
     const distribution = new cloudfront.Distribution(this, 'Distribution', {
-      defaultRootObject: 'index.html',
       geoRestriction: cloudfront.GeoRestriction.allowlist('JP'),
       defaultBehavior: {
         origin: origins.S3BucketOrigin.withOriginAccessIdentity(websiteBucket, {
           originAccessIdentity: oai
         }),
-        cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED
+        cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED,
+        functionAssociations: [{
+          function: urlRewriteFunction,
+          eventType: cloudfront.FunctionEventType.VIEWER_REQUEST
+        }]
       },
       additionalBehaviors: {
         '/api/*': {
@@ -92,6 +128,13 @@ export class QuizStack extends cdk.Stack {
           allowedMethods: cloudfront.AllowedMethods.ALLOW_ALL,
           cachedMethods: cloudfront.CachedMethods.CACHE_GET_HEAD_OPTIONS,
           compress: true
+        },
+        '/quiz/*': {
+          origin: origins.S3BucketOrigin.withOriginAccessIdentity(websiteBucket, {
+            originAccessIdentity: oai
+          }),
+          cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED,
+          viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS
         }
       }
     });

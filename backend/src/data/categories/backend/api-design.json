@@ -1,0 +1,18 @@
+{
+  "chapterId": "api-design",
+  "title": "API編: REST設計",
+  "description": "RESTful APIの設計と実装について学習します",
+  "category": "backend",
+  "order": 2,
+  "status": "beta",
+  "missions": [
+    {
+      "id": "api-001",
+      "type": "choice",
+      "question": "RESTでリソースを取得するHTTPメソッドはどれですか？",
+      "options": ["POST", "GET", "PUT", "DELETE"],
+      "correctAnswer": 1,
+      "timeLimit": 30
+    }
+  ]
+}

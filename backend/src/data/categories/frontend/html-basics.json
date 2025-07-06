@@ -1,0 +1,178 @@
+{
+  "chapterId": "html-basics",
+  "title": "HTML編: 基本構造",
+  "description": "HTMLの基本的なタグと構造について学習します",
+  "category": "frontend",
+  "order": 1,
+  "status": "released",
+  "missions": [
+    {
+      "id": "html-001",
+      "type": "choice",
+      "question": "HTMLで見出しを作成するタグはどれですか？",
+      "options": ["<title>", "<h1>", "<header>", "<head>"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "html-002",
+      "type": "choice",
+      "question": "HTMLでリンクを作成するタグはどれですか？",
+      "options": ["<link>", "<a>", "<href>", "<url>"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "html-003",
+      "type": "choice",
+      "question": "HTMLでコメントを書く正しい方法はどれですか？",
+      "options": ["// コメント", "<!-- コメント -->", "/* コメント */", "# コメント"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "html-004",
+      "type": "choice",
+      "question": "HTMLで改行を表すタグはどれですか？",
+      "options": ["<break>", "<br>", "<newline>", "<nl>"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "html-005",
+      "type": "choice",
+      "question": "HTMLで水平の区切り線を作るタグはどれですか？",
+      "options": ["<line>", "<hr>", "<border>", "<separator>"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "html-006",
+      "type": "choice",
+      "question": "HTMLで番号なしリストを作るタグはどれですか？",
+      "options": ["<ol>", "<ul>", "<list>", "<items>"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "html-007",
+      "type": "choice",
+      "question": "HTMLでリストの各項目を表すタグはどれですか？",
+      "options": ["<item>", "<li>", "<list-item>", "<entry>"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "html-008",
+      "type": "choice",
+      "question": "HTMLで説明リストを作るタグはどれですか？",
+      "options": ["<dl>", "<desc>", "<definition>", "<explain>"],
+      "correctAnswer": 0
+    },
+    {
+      "id": "html-009",
+      "type": "choice",
+      "question": "HTMLで説明リストの用語を表すタグはどれですか？",
+      "options": ["<dt>", "<term>", "<word>", "<title>"],
+      "correctAnswer": 0
+    },
+    {
+      "id": "html-010",
+      "type": "choice",
+      "question": "HTMLでテキストを太字で強調するタグはどれですか？",
+      "options": ["<bold>", "<strong>", "<emphasis>", "<thick>"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "html-011",
+      "type": "choice",
+      "question": "HTMLでコピーライト記号を表す文字実体参照はどれですか？",
+      "options": ["&copy;", "&copyright;", "&(c);", "&cr;"],
+      "correctAnswer": 0
+    },
+    {
+      "id": "html-012",
+      "type": "choice",
+      "question": "HTMLで要素をグループ化する汎用ブロックタグはどれですか？",
+      "options": ["<group>", "<div>", "<block>", "<section>"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "html-013",
+      "type": "choice",
+      "question": "HTMLでインライン要素をグループ化するタグはどれですか？",
+      "options": ["<inline>", "<span>", "<text>", "<wrap>"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "html-014",
+      "type": "choice",
+      "question": "HTMLでテーブルを作成するタグはどれですか？",
+      "options": ["<table>", "<grid>", "<matrix>", "<data>"],
+      "correctAnswer": 0
+    },
+    {
+      "id": "html-015",
+      "type": "choice",
+      "question": "HTMLでテーブルの行を表すタグはどれですか？",
+      "options": ["<row>", "<tr>", "<line>", "<record>"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "html-016",
+      "type": "choice",
+      "question": "HTMLでフォームを作成するタグはどれですか？",
+      "options": ["<form>", "<input-form>", "<user-input>", "<data-form>"],
+      "correctAnswer": 0
+    },
+    {
+      "id": "html-017",
+      "type": "choice",
+      "question": "HTMLでタグに情報を追加するために使用するものはどれですか？",
+      "options": ["プロパティ", "属性", "パラメータ", "オプション"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "html-018",
+      "type": "choice",
+      "question": "HTML要素は何で構成されていますか？",
+      "options": ["開始タグと終了タグのみ", "開始タグ、コンテンツ、終了タグ", "タグと属性のみ", "コンテンツのみ"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "html-019",
+      "type": "choice",
+      "question": "HTMLで空要素（終了タグが不要）の例はどれですか？",
+      "options": ["<p>", "<div>", "<br>", "<span>"],
+      "correctAnswer": 2
+    },
+    {
+      "id": "html-020",
+      "type": "choice",
+      "question": "HTMLでブロックレベル要素の特徴はどれですか？",
+      "options": ["横一列に並ぶ", "新しい行から始まり幅を占有", "テキストの一部だけを占有", "常に中央に配置"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "html-021",
+      "type": "choice",
+      "question": "HTMLでインライン要素の特徴はどれですか？",
+      "options": ["新しい行から始まる", "テキストの一部だけを占有", "幅全体を占有", "常に太字で表示"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "html-022",
+      "type": "choice",
+      "question": "HTML要素のネスト（入れ子）とは何ですか？",
+      "options": ["要素を横に並べること", "要素を他の要素の中に入れること", "要素を縦に並べること", "要素を非表示にすること"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "html-023",
+      "type": "choice",
+      "question": "HTMLで正しいネストの例はどれですか？",
+      "options": ["<p><div>テキスト</div></p>", "<div><p>テキスト</p></div>", "<span><p>テキスト</p></span>", "<h1><h2>テキスト</h2></h1>"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "html-024",
+      "type": "choice",
+      "question": "HTML要素の意味的な構造を表すことを何といいますか？",
+      "options": ["シンタックス", "セマンティックス", "スタイル", "レイアウト"],
+      "correctAnswer": 1
+    }
+  ]
+}

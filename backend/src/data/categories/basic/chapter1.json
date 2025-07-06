@@ -1,45 +1,52 @@
 {
   "chapterId": "chapter1",
   "title": "第1章: 基本構文",
+  "status": "beta",
   "missions": [
     {
       "id": "mission1",
       "question": "JavaScriptで変数を宣言するキーワードは？",
-      "options": ["var", "let", "const", "すべて正解"],
+      "options": [
+        "var",
+        "let",
+        "const",
+        "すべて正解"
+      ],
       "correctAnswer": 3,
-      "points": 10,
-      "timeLimit": 30,
-      "difficulty": "easy",
       "type": "choice"
     },
     {
       "id": "mission2",
       "question": "console.log()の用途は？",
-      "options": ["デバッグ出力", "ファイル書き込み", "データベース接続", "ネットワーク通信"],
+      "options": [
+        "デバッグ出力",
+        "ファイル書き込み",
+        "データベース接続",
+        "ネットワーク通信"
+      ],
       "correctAnswer": 0,
-      "points": 10,
-      "timeLimit": 30,
-      "difficulty": "easy",
       "type": "choice"
     },
     {
       "id": "mission3",
       "question": "JavaScriptで文字列を結合する演算子を入力してください",
       "correctAnswer": "+",
-      "points": 10,
-      "timeLimit": 30,
-      "difficulty": "easy",
       "type": "input"
     },
     {
       "id": "mission4",
       "question": "undefinedとnullの違いは？",
-      "options": ["同じ", "undefinedは未定義、nullは空値", "nullは未定義、undefinedは空値", "違いはない"],
+      "options": [
+        "同じ",
+        "undefinedは未定義、nullは空値",
+        "nullは未定義、undefinedは空値",
+        "違いはない"
+      ],
       "correctAnswer": 1,
-      "points": 15,
-      "timeLimit": 45,
-      "difficulty": "medium",
       "type": "choice"
     }
-  ]
+  ],
+  "category": "basic",
+  "order": 1,
+  "description": "プログラミングの基本的な概念について学習します"
 }

@@ -28,10 +28,11 @@
     <div class="dev-panel">
         <div>Development Mode</div>
         <button onclick="showScreen('chapter-select')">章選択</button>
-        <button onclick="showScreen('quiz-screen')">問題画面</button>
+        <button onclick="showQuizScreen()">問題画面</button>
         <button onclick="showScreen('result-screen')">結果画面</button>
         <button onclick="showScreen('gameover-screen')">ゲーム終了</button>
         <button onclick="testCodeQuestion()">コード問題テスト</button>
+        <button onclick="testTimer()">タイマーテスト</button>
     </div>
 
     <div id="app">
@@ -58,10 +59,6 @@
         <main id="main-content">
             <div id="chapter-select" class="screen">
                 <h2>章を選択してください</h2>
-                <button onclick="startChapter('chapter1')">第1章: 基本構文</button>
-                <button onclick="startChapter('chapter2')">第2章: 制御構造</button>
-                <button onclick="startChapter('chapter3')">第3章: 関数</button>
-                <button onclick="startChapter('chapter4')">第4章: プログラミング実践</button>
             </div>
             
             <div id="quiz-screen" class="screen hidden">
@@ -121,6 +118,14 @@
         // Mock config for development
         window.API_BASE_URL = '/api';
         
+        // Mock chapters data
+        const mockChapters = [
+            { chapterId: 'chapter1', title: '第1章: 基本構文' },
+            { chapterId: 'chapter2', title: '第2章: 制御構造' },
+            { chapterId: 'chapter3', title: '第3章: 関数' },
+            { chapterId: 'chapter4', title: '第4章: プログラミング実践' }
+        ];
+        
         // Mock data for testing
         const mockChapter = {
             chapterId: 'chapter1',
@@ -140,6 +145,21 @@
             ]
         };
         
+        // Mock loadChaptersList for preview
+        window.loadChaptersList = async function() {
+            const chaptersContainer = document.querySelector('#chapter-select');
+            const h2 = chaptersContainer.querySelector('h2');
+            
+            chaptersContainer.querySelectorAll('button').forEach(btn => btn.remove());
+            
+            mockChapters.forEach(chapter => {
+                const button = document.createElement('button');
+                button.textContent = chapter.title;
+                button.onclick = () => startChapter(chapter.chapterId);
+                chaptersContainer.appendChild(button);
+            });
+        };
+        
         // Test function for code questions
         function testCodeQuestion() {
             currentChapter = mockChapter;
@@ -148,6 +168,85 @@
             showQuestion();
             showScreen('quiz-screen');
         }
+        
+        // Function to show quiz screen with timer
+        function showQuizScreen() {
+            // Mock game config for timer
+            window.gameConfig = {
+                timing: {
+                    defaultTimeLimit: 30,
+                    timeLimitByType: {
+                        choice: 30,
+                        input: 45,
+                        code: 120
+                    }
+                }
+            };
+            
+            // Mock current missions
+            window.currentMissions = [{
+                id: 'test-choice',
+                type: 'choice',
+                question: 'テスト問題: JavaScriptで変数を宣言するキーワードは？',
+                options: ['var', 'let', 'const', 'すべて正解'],
+                correctAnswer: 3
+            }];
+            window.currentMissionIndex = 0;
+            
+            showQuestion();
+            showScreen('quiz-screen');
+        }
+        
+        // Test function for timer
+        function testTimer() {
+            const timerElement = document.getElementById('question-timer');
+            console.log('=== TIMER TEST ===');
+            console.log('Timer element:', timerElement);
+            
+            if (timerElement) {
+                timerElement.classList.remove('hidden');
+                timerElement.style.display = 'flex';
+                timerElement.style.position = 'fixed';
+                timerElement.style.bottom = '30px';
+                timerElement.style.right = '30px';
+                timerElement.style.zIndex = '9999';
+                timerElement.style.backgroundColor = 'red';
+                timerElement.style.color = 'white';
+                timerElement.style.width = '80px';
+                timerElement.style.height = '80px';
+                timerElement.style.borderRadius = '50%';
+                timerElement.style.alignItems = 'center';
+                timerElement.style.justifyContent = 'center';
+                
+                const computedStyle = window.getComputedStyle(timerElement);
+                console.log('=== TIMER DEBUG INFO ===');
+                console.log('display:', computedStyle.display);
+                console.log('visibility:', computedStyle.visibility);
+                console.log('opacity:', computedStyle.opacity);
+                console.log('position:', computedStyle.position);
+                console.log('zIndex:', computedStyle.zIndex);
+                console.log('bottom:', computedStyle.bottom);
+                console.log('right:', computedStyle.right);
+                console.log('width:', computedStyle.width);
+                console.log('height:', computedStyle.height);
+                console.log('backgroundColor:', computedStyle.backgroundColor);
+                console.log('Element rect:', timerElement.getBoundingClientRect());
+                console.log('Parent element:', timerElement.parentElement?.tagName);
+                console.log('Is element in viewport?', timerElement.offsetParent !== null);
+            }
+        }
+        
+        // Initialize chapters on load
+        window.addEventListener('load', () => {
+            loadChaptersList();
+        });
+        
+        // Load chapters immediately for preview
+        setTimeout(() => {
+            if (typeof loadChaptersList === 'function') {
+                loadChaptersList();
+            }
+        }, 100);
     </script>
     <script src="app.js"></script>
 </body>

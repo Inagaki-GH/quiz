@@ -19,11 +19,11 @@ echo "🚀 Starting frontend deployment..."
 
 # S3にファイルをアップロード
 echo "📁 Uploading files to S3..."
-aws s3 sync "$FRONTEND_DIR" "s3://$S3_BUCKET" --delete
+aws s3 sync "$FRONTEND_DIR" "s3://$S3_BUCKET/" --delete
 
 # CloudFrontキャッシュを無効化
 echo "🗑️  Invalidating CloudFront cache..."
-node invalidate-cache.js "$DISTRIBUTION_ID"
+node invalidate-cache.js "$DISTRIBUTION_ID" "/quiz/*"
 
 echo "✅ Frontend deployment completed!"
 echo "🌐 Website will be updated in a few minutes."

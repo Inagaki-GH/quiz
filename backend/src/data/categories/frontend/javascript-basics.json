@@ -1,0 +1,28 @@
+{
+  "chapterId": "javascript-basics",
+  "title": "JavaScript編: 基本構文",
+  "description": "JavaScriptの変数、関数、制御構造について学習します",
+  "category": "frontend",
+  "order": 3,
+  "status": "beta",
+  "missions": [
+    {
+      "id": "js-001",
+      "type": "code",
+      "question": "2つの数値を足し算する関数を作成してください",
+      "funcName": "add",
+      "template": "function add(a, b) {\n    // ここに実装\n}",
+      "tests": [
+        { "args": [1, 2], "expected": 3 },
+        { "args": [5, 3], "expected": 8 }
+      ]
+    },
+    {
+      "id": "js-002",
+      "type": "choice",
+      "question": "JavaScriptで変数を宣言するキーワードはどれですか？",
+      "options": ["variable", "var", "declare", "define"],
+      "correctAnswer": 1
+    }
+  ]
+}

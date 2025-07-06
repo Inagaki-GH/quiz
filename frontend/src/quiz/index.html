@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>1ST ENGINEER</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/quiz/styles.css">
 </head>
 <body>
     <div id="app">
@@ -31,11 +31,8 @@
         
         <main id="main-content">
             <div id="chapter-select" class="screen">
-                <h2>章を選択してください</h2>
-                <button onclick="startChapter('chapter1')">第1章: 基本構文</button>
-                <button onclick="startChapter('chapter2')">第2章: 制御構造</button>
-                <button onclick="startChapter('chapter3')">第3章: 関数</button>
-                <button onclick="startChapter('chapter4')">第4章: プログラミング実践</button>
+                <h2>カテゴリを選択してください</h2>
+                <!-- 章ボタンは動的に生成されます -->
             </div>
             
             <div id="quiz-screen" class="screen hidden">
@@ -82,6 +79,7 @@
         </main>
         
         <footer>
+            <button id="back-to-top" onclick="backToMenu()">🏠 トップページに戻る</button>
             <p>&copy; Inagaki-GH</p>
             <p>Created by Amazon Q Developer</p>
             <p><a href="https://github.com/Inagaki-GH/quiz" target="_blank">Source Code</a></p>
@@ -91,7 +89,7 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <script src="config.js"></script>
-    <script src="app.js"></script>
+    <script src="/quiz/config.js"></script>
+    <script src="/quiz/app.js"></script>
 </body>
 </html>

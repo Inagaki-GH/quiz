@@ -1,0 +1,54 @@
+{
+  "chapterId": "chapter3",
+  "title": "第3章: 関数",
+  "status": "beta",
+  "category": "basic",
+  "order": 3,
+  "description": "プログラミングの基本的な概念について学習します",
+  "missions": [
+    {
+      "id": "mission1",
+      "question": "関数を定義する方法は？",
+      "options": [
+        "function name() {}",
+        "const name = () => {}",
+        "const name = function() {}",
+        "すべて正解"
+      ],
+      "correctAnswer": 3
+    },
+    {
+      "id": "mission2",
+      "question": "アロー関数の特徴は？",
+      "options": [
+        "thisが固定される",
+        "短く書ける",
+        "ES6で追加された",
+        "すべて正解"
+      ],
+      "correctAnswer": 3
+    },
+    {
+      "id": "mission3",
+      "question": "関数の引数にデフォルト値を設定するには？",
+      "options": [
+        "function(a = 1) {}",
+        "function(a || 1) {}",
+        "function(a default 1) {}",
+        "function(a: 1) {}"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "mission4",
+      "question": "クロージャとは？",
+      "options": [
+        "関数の終了",
+        "変数のスコープを保持する仕組み",
+        "エラー処理",
+        "ループ処理"
+      ],
+      "correctAnswer": 1
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "html-basics": {
+    "chapterId": "html-basics",
+    "title": "HTML編: 基本構造",
+    "description": "HTMLの基本的なタグと構造について学習します",
+    "category": "frontend",
+    "order": 1,
+    "missions": [
+      {
+        "id": "html-001",
+        "type": "choice",
+        "question": "HTMLで見出しを作成するタグはどれですか？",
+        "options": ["<title>", "<h1>", "<header>", "<head>"],
+        "correctAnswer": 1,
+        "timeLimit": 30
+      }
+    ]
+  },
+  "css-basics": {
+    "chapterId": "css-basics", 
+    "title": "CSS編: スタイリング基礎",
+    "description": "CSSの基本的なセレクタとプロパティについて学習します",
+    "category": "frontend",
+    "order": 2,
+    "missions": [
+      {
+        "id": "css-001",
+        "type": "choice",
+        "question": "要素の背景色を設定するCSSプロパティはどれですか？",
+        "options": ["color", "background-color", "bg-color", "background"],
+        "correctAnswer": 1,
+        "timeLimit": 30
+      }
+    ]
+  },
+  "javascript-basics": {
+    "chapterId": "javascript-basics",
+    "title": "JavaScript編: 基本構文",
+    "description": "JavaScriptの変数、関数、制御構造について学習します",
+    "category": "frontend",
+    "order": 3,
+    "missions": [
+      {
+        "id": "js-001",
+        "type": "code",
+        "question": "2つの数値を足し算する関数を作成してください",
+        "funcName": "add",
+        "template": "function add(a, b) {\n    // ここに実装\n}",
+        "tests": [
+          { "args": [1, 2], "expected": 3 },
+          { "args": [5, 3], "expected": 8 }
+        ],
+        "timeLimit": 60
+      }
+    ]
+  },
+  "react-basics": {
+    "chapterId": "react-basics",
+    "title": "React編: コンポーネント基礎",
+    "description": "Reactコンポーネントの作成と状態管理について学習します",
+    "category": "frontend",
+    "order": 4,
+    "missions": [
+      {
+        "id": "react-001",
+        "type": "choice",
+        "question": "Reactでコンポーネントの状態を管理するフックはどれですか？",
+        "options": ["useEffect", "useState", "useContext", "useReducer"],
+        "correctAnswer": 1,
+        "timeLimit": 30
+      }
+    ]
+  },
+  "chapter1": {
+    "chapterId": "chapter1",
+    "title": "第1章: 基本構文",
+    "description": "プログラミングの基本的な構文について学習します",
+    "category": "basic",
+    "order": 1
+  },
+  "chapter2": {
+    "chapterId": "chapter2",
+    "title": "第2章: 制御構造",
+    "description": "条件分岐とループ処理について学習します",
+    "category": "basic",
+    "order": 2
+  },
+  "chapter3": {
+    "chapterId": "chapter3",
+    "title": "第3章: 関数",
+    "description": "関数の定義と使用方法について学習します",
+    "category": "basic",
+    "order": 3
+  },
+  "chapter4": {
+    "chapterId": "chapter4",
+    "title": "第4章: プログラミング実践",
+    "description": "実践的なプログラミング技法について学習します",
+    "category": "basic",
+    "order": 4
+  }
+}

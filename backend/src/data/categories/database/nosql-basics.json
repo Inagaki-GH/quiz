@@ -1,0 +1,17 @@
+{
+  "chapterId": "nosql-basics",
+  "title": "NoSQL編: DynamoDB基礎",
+  "description": "NoSQLデータベースの基本概念について学習します",
+  "category": "database",
+  "order": 2,
+  "status": "draft",
+  "missions": [
+    {
+      "id": "nosql-001",
+      "type": "choice",
+      "question": "DynamoDBの主キーの種類はどれですか？",
+      "options": ["パーティションキーのみ", "パーティションキー + ソートキー", "両方可能", "インデックスキー"],
+      "correctAnswer": 2
+    }
+  ]
+}

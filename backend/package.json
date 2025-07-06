@@ -3,7 +3,12 @@
   "version": "1.0.0",
   "scripts": {
     "deploy": "sam build && sam deploy",
-    "import-config": "node src/data/import-config.js"
+    "import-config": "node src/data/import-config.js",
+    "update-titles": "node src/data/update-chapters-title.js",
+    "import-tech-chapters": "node src/data/import-tech-chapters.js",
+    "import-all-categories": "node src/data/import-all-categories.js",
+    "check-chapters": "node src/data/check-chapters.js",
+    "add-categories": "node src/data/add-missing-categories.js"
   },
   "dependencies": {
     "aws-lambda": "^1.0.7",

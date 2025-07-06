@@ -8,10 +8,15 @@
   },
   "timing": {
     "defaultTimeLimit": 30,
-    "warningThreshold": 10
+    "warningThreshold": 10,
+    "timeLimitByType": {
+      "choice": 30,
+      "input": 45,
+      "code": 120
+    }
   },
   "gameplay": {
-    "questionsPerChapter": 4,
+    "questionsPerChapter": 20,
     "shuffleQuestions": true
   }
 }

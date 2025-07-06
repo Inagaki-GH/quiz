@@ -20,13 +20,20 @@ let gameState = {
     codeTestPassed: false  // コードテスト通過フラグ
 };
 
-function showScreen(screenId) {
-    // タイマー表示制御
+async function showScreen(screenId) {
+    // 章選択画面では章一覧を動的読み込み
+    if (screenId === 'chapter-select') {
+        // 初期表示時は既に読み込み済みの場合がある
+        const existingButtons = document.querySelectorAll('#chapter-select button');
+        if (existingButtons.length === 0) {
+            await loadChaptersList();
+        }
+    }
+    
+    // タイマー表示制御（問題回答中のみ表示）
     const timerElement = document.getElementById('question-timer');
-    if (screenId === 'quiz-screen') {
-        timerElement.classList.remove('hidden');
-    } else {
-        timerElement.classList.add('hidden');
+    if (screenId !== 'quiz-screen') {
+        timerElement.style.display = 'none';
     }
     
     // 現在の画面をフェードアウト
@@ -68,17 +75,58 @@ function showScreen(screenId) {
 
 async function startChapter(chapterId) {
     try {
+        console.log('=== START CHAPTER DEBUG ===');
+        console.log('Starting chapter:', chapterId);
+        console.log('API_BASE_URL:', API_BASE_URL);
+        
         const response = await axios.get(`${API_BASE_URL}/chapter/${chapterId}`, {
             headers: { 'X-Quiz-Origin': 'quiz-app' }
         });
         
+        console.log('API Response:', response.data);
+        
         currentChapter = response.data;
-        currentMissions = currentChapter.missions;
+        
+        // ゲーム設定を取得して問題数を制限
+        let questionsPerChapter = 4; // デフォルト値
+        try {
+            console.log('Fetching config from:', `${API_BASE_URL}/config`);
+            const configResponse = await axios.get(`${API_BASE_URL}/config`, {
+                headers: { 'X-Quiz-Origin': 'quiz-app' }
+            });
+            console.log('Config response:', configResponse.data);
+            gameConfig = configResponse.data;
+            questionsPerChapter = gameConfig.gameplay?.questionsPerChapter || 4;
+            console.log('Game config loaded:', gameConfig);
+            console.log('Questions per chapter:', questionsPerChapter);
+        } catch (error) {
+            console.warn('Failed to load config, using default 4 questions:', error.message);
+            questionsPerChapter = 4;
+        }
+        
+        // 問題をシャッフルして指定数だけ選択
+        const allMissions = currentChapter.missions || [];
+        console.log('Total available missions:', allMissions.length);
+        console.log('Will select:', questionsPerChapter, 'questions');
+        
+        const shuffledMissions = [...allMissions];
+        
+        // Fisher-Yates shuffle algorithm for proper randomization
+        for (let i = shuffledMissions.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffledMissions[i], shuffledMissions[j]] = [shuffledMissions[j], shuffledMissions[i]];
+        }
+        
+        currentMissions = shuffledMissions.slice(0, questionsPerChapter);
+        console.log('Selected questions:', currentMissions.map(m => m.id));
+        console.log('Final mission count:', currentMissions.length);
+        
         currentMissionIndex = 0;
         totalScore = 0;
         
         console.log('Chapter loaded:', currentChapter);
-        console.log('Missions:', currentMissions);
+        console.log('Missions array:', currentMissions);
+        console.log('Missions count:', currentMissions.length);
         
         // ゲーム状態初期化
         gameState = {
@@ -91,6 +139,13 @@ async function startChapter(chapterId) {
             comboCount: 0,
             codeTestPassed: false
         };
+        
+        if (!currentMissions || currentMissions.length === 0) {
+            console.error('No missions found in chapter!');
+            alert('この章には問題が登録されていません。');
+            await showScreen('chapter-select');
+            return;
+        }
         
         updateGameStatus();
         updateComboDisplay();
@@ -105,11 +160,27 @@ async function startChapter(chapterId) {
 }
 
 function startQuestionTimer(timeLimit) {
+    console.log('startQuestionTimer called with:', timeLimit);
     clearInterval(gameState.questionTimer);
     gameState.questionTimeLeft = timeLimit;
     
+    // タイマー表示を確実に有効化
+    const timerElement = document.getElementById('question-timer');
+    if (timerElement) {
+        timerElement.style.display = 'flex';
+        timerElement.style.visibility = 'visible';
+        timerElement.classList.remove('hidden');
+        console.log('Timer element made visible in startQuestionTimer');
+    } else {
+        console.error('Timer element not found in startQuestionTimer!');
+    }
+    
+    console.log('Timer initialized with:', gameState.questionTimeLeft, 'seconds');
+    updateTimerDisplay(); // 初期表示
+    
     gameState.questionTimer = setInterval(() => {
         gameState.questionTimeLeft--;
+        console.log('Timer tick:', gameState.questionTimeLeft);
         updateTimerDisplay();
         
         if (gameState.questionTimeLeft <= 10) {
@@ -124,6 +195,7 @@ function startQuestionTimer(timeLimit) {
 
 function handleTimeUp() {
     clearInterval(gameState.questionTimer);
+    document.getElementById('question-timer').style.display = 'none';
     gameState.wrongAnswers++;
     gameState.comboCount = 0; // コンボリセット
     updateGameStatus();
@@ -137,7 +209,13 @@ function handleTimeUp() {
 }
 
 function updateTimerDisplay() {
-    document.getElementById('question-time').textContent = gameState.questionTimeLeft;
+    const timeElement = document.getElementById('question-time');
+    if (timeElement) {
+        timeElement.textContent = gameState.questionTimeLeft;
+        console.log('Timer display updated to:', gameState.questionTimeLeft);
+    } else {
+        console.error('question-time element not found!');
+    }
 }
 
 function updateGameStatus() {
@@ -181,18 +259,73 @@ function showQuestion() {
     if (gameState.isGameOver) return;
     
     const mission = currentMissions[currentMissionIndex];
-    console.log('Showing question:', currentMissionIndex, mission);
+    console.log('=== SHOW QUESTION DEBUG ===');
+    console.log('Current mission index:', currentMissionIndex);
+    console.log('Total missions:', currentMissions.length);
+    console.log('Mission object:', mission);
+    
+    if (!mission) {
+        console.error('Mission is undefined! Check currentMissions array');
+        console.log('currentMissions:', currentMissions);
+        return;
+    }
+    
     console.log('Mission type:', mission.type);
     console.log('Mission has options:', !!mission.options);
+    console.log('Mission question:', mission.question);
     
     // コードテストフラグをリセット
     gameState.codeTestPassed = false;
     
+    // テスト結果表示をリセット
+    document.getElementById('test-results').classList.add('hidden');
+    
     questionStartTime = Date.now();
     
-    // タイマーリセット
-    document.getElementById('question-timer').classList.remove('timer-warning');
-    startQuestionTimer(mission.timeLimit);
+    // タイマー表示とリセット
+    const timerElement = document.getElementById('question-timer');
+    console.log('Timer element found:', !!timerElement);
+    console.log('Timer element classes before:', timerElement?.className);
+    
+    if (timerElement) {
+        // hiddenクラスを確実に削除
+        timerElement.classList.remove('timer-warning', 'hidden');
+        timerElement.style.display = 'flex';
+        timerElement.style.visibility = 'visible';
+        timerElement.style.opacity = '1';
+        timerElement.style.zIndex = '9999';
+        timerElement.style.position = 'fixed';
+        timerElement.style.bottom = '30px';
+        timerElement.style.right = '30px';
+        timerElement.style.width = '80px';
+        timerElement.style.height = '80px';
+        timerElement.style.borderRadius = '50%';
+        timerElement.style.backgroundColor = '#8B4513';
+        timerElement.style.color = 'white';
+        timerElement.style.alignItems = 'center';
+        timerElement.style.justifyContent = 'center';
+        console.log('Timer element classes after:', timerElement.className);
+        const computedStyle = window.getComputedStyle(timerElement);
+        console.log('=== TIMER DEBUG INFO ===');
+        console.log('display:', computedStyle.display);
+        console.log('visibility:', computedStyle.visibility);
+        console.log('opacity:', computedStyle.opacity);
+        console.log('position:', computedStyle.position);
+        console.log('zIndex:', computedStyle.zIndex);
+        console.log('bottom:', computedStyle.bottom);
+        console.log('right:', computedStyle.right);
+        console.log('width:', computedStyle.width);
+        console.log('height:', computedStyle.height);
+        console.log('backgroundColor:', computedStyle.backgroundColor);
+        console.log('Element rect:', timerElement.getBoundingClientRect());
+        console.log('Parent element:', timerElement.parentElement?.tagName);
+        console.log('Is element in viewport?', timerElement.offsetParent !== null);
+    }
+    
+    // タイプ別タイムリミットを取得
+    const timeLimit = getTimeLimitForType(mission.type);
+    console.log('Timer setup - timeLimit:', timeLimit, 'for type:', mission.type);
+    startQuestionTimer(timeLimit);
     
     // 質問テキストをタイプライター効果で表示
     const questionElement = document.getElementById('question-text');
@@ -372,6 +505,11 @@ async function runTests() {
 async function runMissionTests(userCode, mission) {
     const { funcName, tests } = mission;
     
+    // HTML問題の場合は汎用テストを使用
+    if (mission.type === 'code' && !funcName) {
+        return await runGenericTests(userCode, tests);
+    }
+    
     try {
         // Chrome対応：より安全なコード実行方法
         let userFunc;
@@ -415,6 +553,79 @@ async function runMissionTests(userCode, mission) {
         return { success, results };
     } catch (error) {
         console.error('Mission test error:', error);
+        throw error;
+    }
+}
+
+// 汎用テスト実行関数
+async function runGenericTests(userCode, tests) {
+    try {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(userCode, 'text/html');
+        
+        const results = tests.map((test, index) => {
+            try {
+                let pass = false;
+                let output = null;
+                
+                switch (test.check) {
+                    case 'hasElement':
+                        const elements = doc.querySelectorAll(test.selector);
+                        pass = elements.length > 0;
+                        output = elements.length;
+                        break;
+                        
+                    case 'textContent':
+                        const element = doc.querySelector(test.selector);
+                        output = element?.textContent?.trim() || '';
+                        pass = output === test.expected;
+                        break;
+                        
+                    case 'textIncludes':
+                        const el = doc.querySelector(test.selector);
+                        output = el?.textContent || '';
+                        pass = output.includes(test.expected);
+                        break;
+                        
+                    case 'attribute':
+                        const attrEl = doc.querySelector(test.selector);
+                        output = attrEl?.getAttribute(test.attribute) || '';
+                        pass = output === test.expected;
+                        break;
+                        
+                    case 'elementCount':
+                        const countEls = doc.querySelectorAll(test.selector);
+                        output = countEls.length;
+                        pass = output === test.expected;
+                        break;
+                        
+                    default:
+                        pass = false;
+                        output = 'Unknown test type';
+                }
+                
+                return { 
+                    args: [test.selector], 
+                    expected: test.expected, 
+                    output, 
+                    pass,
+                    description: test.description
+                };
+            } catch (e) {
+                return { 
+                    args: [test.selector], 
+                    expected: test.expected, 
+                    output: null, 
+                    pass: false, 
+                    error: e.message,
+                    description: test.description
+                };
+            }
+        });
+        
+        const success = results.every(r => r.pass);
+        return { success, results };
+    } catch (error) {
         throw error;
     }
 }
@@ -516,6 +727,7 @@ async function submitAnswer() {
     }
     
     clearInterval(gameState.questionTimer);
+    document.getElementById('question-timer').style.display = 'none';
     
     const answerData = {
         chapterId: currentChapter.chapterId,
@@ -655,10 +867,17 @@ function restartGame() {
     }
 }
 
-function backToMenu() {
+async function backToMenu() {
+    // ゲーム終了画面の状態をクリア
+    document.getElementById('gameover-screen').classList.remove('cleared');
+    document.getElementById('gameover-title').textContent = 'GAME OVER';
+    
     resetGameState();
     updateProgress();
-    showScreen('chapter-select');
+    await showScreen('chapter-select');
+    
+    // カテゴリ選択画面に戻る
+    backToCategorySelection();
 }
 
 function resetGameState() {
@@ -684,8 +903,174 @@ function resetGameState() {
     updateTotalScore();
     document.getElementById('question-timer').classList.remove('timer-warning');
     document.getElementById('gameover-screen').classList.remove('cleared');
+    document.getElementById('gameover-title').textContent = 'GAME OVER';
     document.getElementById('test-results').classList.add('hidden');
+    
+    // 結果画面のリセット
+    document.getElementById('result-title').textContent = '';
+    document.getElementById('gameover-reason').textContent = '';
+    document.getElementById('final-score').querySelector('span').textContent = '0';
+    document.getElementById('final-stats').textContent = '';
 }
+
+async function loadChaptersList() {
+    console.log('Loading chapters list...');
+    try {
+        const response = await axios.get(`${API_BASE_URL}/chapters`, {
+            headers: { 'X-Quiz-Origin': 'quiz-app' }
+        });
+        
+        console.log('Chapters response:', response.data);
+        
+        // 各章のカテゴリ情報を詳細表示
+        if (response.data.chapters) {
+            console.log('=== CHAPTER CATEGORIES DEBUG ===');
+            response.data.chapters.forEach(ch => {
+                console.log(`${ch.chapterId}: category=${ch.category || 'NONE'}, title=${ch.title}`);
+            });
+        }
+        
+        const chaptersContainer = document.querySelector('#chapter-select');
+        
+        // 既存のコンテンツを削除（h2以外）
+        chaptersContainer.querySelectorAll(':not(h2)').forEach(el => el.remove());
+        
+        if (response.data.chapters && response.data.chapters.length > 0) {
+            displayCategorySelection(response.data.chapters, chaptersContainer);
+            console.log(`Generated category selection from ${response.data.chapters.length} chapters`);
+        } else {
+            console.warn('No chapters found, using fallback');
+            createFallbackChapters(chaptersContainer);
+        }
+    } catch (error) {
+        console.error('Failed to load chapters:', error);
+        const chaptersContainer = document.querySelector('#chapter-select');
+        createFallbackChapters(chaptersContainer);
+    }
+}
+
+let allChapters = [];
+let gameConfig = null;
+
+function getTimeLimitForType(questionType) {
+    if (gameConfig && gameConfig.timing && gameConfig.timing.timeLimitByType) {
+        return gameConfig.timing.timeLimitByType[questionType] || gameConfig.timing.defaultTimeLimit || 30;
+    }
+    return 30; // フォールバック
+}
+
+function displayCategorySelection(chapters, container) {
+    allChapters = chapters;
+    
+    console.log('=== CATEGORY SELECTION DEBUG ===');
+    console.log('Total chapters received:', chapters.length);
+    
+    // カテゴリ別にグループ化
+    const categories = {};
+    chapters.forEach(chapter => {
+        const category = chapter.category || 'other';
+        console.log(`Chapter ${chapter.chapterId} -> category: ${category}`);
+        if (!categories[category]) {
+            categories[category] = [];
+        }
+        categories[category].push(chapter);
+    });
+    
+    console.log('Categories found:', Object.keys(categories));
+    Object.keys(categories).forEach(cat => {
+        console.log(`${cat}: ${categories[cat].length} chapters`);
+    });
+    
+    // カテゴリ名のマッピング
+    const categoryNames = {
+        'basic': '📚 基本編',
+        'frontend': '🌐 フロントエンド',
+        'backend': '💾 バックエンド',
+        'database': '🗄️ データベース',
+        'other': '📚 その他'
+    };
+    
+    // カテゴリの表示順序
+    const categoryOrder = ['basic', 'frontend', 'backend', 'database', 'other'];
+    
+    categoryOrder.forEach(category => {
+        if (!categories[category]) return;
+        
+        const button = document.createElement('button');
+        button.textContent = categoryNames[category] || category;
+        button.className = 'category-button';
+        button.onclick = () => showChaptersInCategory(category, categoryNames[category]);
+        container.appendChild(button);
+    });
+}
+
+function showChaptersInCategory(category, categoryName) {
+    const container = document.querySelector('#chapter-select');
+    const h2 = container.querySelector('h2');
+    
+    // タイトルを更新
+    h2.innerHTML = `${categoryName} <button class="back-btn" onclick="backToCategorySelection()">← カテゴリ一覧に戻る</button>`;
+    
+    // 既存のボタンを削除
+    container.querySelectorAll(':not(h2)').forEach(el => el.remove());
+    
+    // 章ボタンを表示（ステータスフィルタリング）
+    const categoryChapters = allChapters
+        .filter(ch => ch.category === category && (ch.status !== 'draft'))
+        .sort((a, b) => (a.order || 0) - (b.order || 0));
+    
+    categoryChapters.forEach(chapter => {
+        const button = document.createElement('button');
+        let title = chapter.title;
+        
+        // ステータスバッジを追加
+        if (chapter.status === 'beta') {
+            title += ' 📝β';
+            button.style.opacity = '0.8';
+        }
+        
+        button.textContent = title;
+        button.onclick = () => startChapter(chapter.chapterId);
+        container.appendChild(button);
+    });
+}
+
+function backToCategorySelection() {
+    const container = document.querySelector('#chapter-select');
+    const h2 = container.querySelector('h2');
+    
+    // タイトルを元に戻す
+    h2.textContent = 'カテゴリを選択してください';
+    
+    // 既存のコンテンツを削除
+    container.querySelectorAll(':not(h2)').forEach(el => el.remove());
+    
+    // カテゴリ選択を再表示
+    displayCategorySelection(allChapters, container);
+}
+
+function createFallbackChapters(container) {
+    const fallbackChapters = [
+        { chapterId: 'chapter1', title: '第1章: 基本構文' },
+        { chapterId: 'chapter2', title: '第2章: 制御構造' },
+        { chapterId: 'chapter3', title: '第3章: 関数' },
+        { chapterId: 'chapter4', title: '第4章: プログラミング実践' }
+    ];
+    
+    fallbackChapters.forEach(chapter => {
+        const button = document.createElement('button');
+        button.textContent = chapter.title;
+        button.onclick = () => startChapter(chapter.chapterId);
+        container.appendChild(button);
+    });
+    console.log('Created fallback chapter buttons');
+}
+
+// ページ読み込み時に章一覧を読み込み
+document.addEventListener('DOMContentLoaded', async function() {
+    console.log('Page loaded, initializing chapters...');
+    await loadChaptersList();
+});
 
 function updateProgress() {
     const progress = document.getElementById('progress');

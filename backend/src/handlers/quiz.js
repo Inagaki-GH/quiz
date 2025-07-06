@@ -31,10 +31,20 @@ exports.handler = async (event) => {
       };
     }
     
+    // GET /api/chapters (章一覧取得)
+    if (event.httpMethod === 'GET' && event.path === '/api/chapters') {
+      return await getChaptersList(headers);
+    }
+    
     // GET /api/chapter/{chapterId}
     if (event.httpMethod === 'GET' && event.path.startsWith('/api/chapter/')) {
       const chapterId = event.path.split('/')[3];
       return await getChapter(chapterId, headers);
+    }
+    
+    // GET /api/config
+    if (event.httpMethod === 'GET' && event.path === '/api/config') {
+      return await getConfig(headers);
     }
     
     // POST /api/answer
@@ -73,11 +83,10 @@ async function getChapter(chapterId, headers) {
       return { statusCode: 404, headers, body: JSON.stringify({ error: 'Chapter not found' }) };
     }
 
-    const randomMissions = getRandomMissions(result.Item.missions, 4);
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify({ ...result.Item, missions: randomMissions })
+      body: JSON.stringify(result.Item)
     };
   } catch (error) {
     console.error('DynamoDB Error:', error);
@@ -178,6 +187,53 @@ async function getGameConfig() {
     timing: { defaultTimeLimit: 30 },
     gameplay: { questionsPerChapter: 4 }
   };
+}
+
+async function getConfig(headers) {
+  try {
+    const config = await getGameConfig();
+    return {
+      statusCode: 200,
+      headers,
+      body: JSON.stringify(config)
+    };
+  } catch (error) {
+    console.error('Config error:', error);
+    return { 
+      statusCode: 500, 
+      headers, 
+      body: JSON.stringify({ error: 'Failed to get config' }) 
+    };
+  }
+}
+
+async function getChaptersList(headers) {
+  try {
+    const { ScanCommand } = require('@aws-sdk/lib-dynamodb');
+    const command = new ScanCommand({
+      TableName: process.env.CHAPTERS_TABLE,
+      FilterExpression: 'attribute_exists(chapterId) AND chapterId <> :configId',
+      ExpressionAttributeValues: {
+        ':configId': 'game-settings'
+      }
+    });
+    
+    const result = await docClient.send(command);
+    const chapters = result.Items.sort((a, b) => a.chapterId.localeCompare(b.chapterId));
+    
+    return {
+      statusCode: 200,
+      headers,
+      body: JSON.stringify({ chapters })
+    };
+  } catch (error) {
+    console.error('Chapters list error:', error);
+    return { 
+      statusCode: 500, 
+      headers, 
+      body: JSON.stringify({ error: 'Failed to get chapters list' }) 
+    };
+  }
 }
 
 function getRandomMissions(missions, count = 4) {

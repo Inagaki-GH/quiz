@@ -1,0 +1,24 @@
+{
+  "chapterId": "css-basics",
+  "title": "CSS編: スタイリング基礎",
+  "description": "CSSの基本的なセレクタとプロパティについて学習します",
+  "category": "frontend",
+  "order": 2,
+  "status": "beta",
+  "missions": [
+    {
+      "id": "css-001",
+      "type": "choice",
+      "question": "要素の背景色を設定するCSSプロパティはどれですか？",
+      "options": ["color", "background-color", "bg-color", "background"],
+      "correctAnswer": 1
+    },
+    {
+      "id": "css-002",
+      "type": "choice",
+      "question": "CSSでテキストの色を変更するプロパティはどれですか？",
+      "options": ["text-color", "font-color", "color", "foreground"],
+      "correctAnswer": 2
+    }
+  ]
+}

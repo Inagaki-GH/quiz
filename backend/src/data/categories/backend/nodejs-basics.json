@@ -1,0 +1,18 @@
+{
+  "chapterId": "nodejs-basics",
+  "title": "Node.js編: サーバー基礎",
+  "description": "Node.jsを使ったサーバーサイド開発について学習します",
+  "category": "backend",
+  "order": 1,
+  "status": "draft",
+  "missions": [
+    {
+      "id": "node-001",
+      "type": "choice",
+      "question": "Node.jsでHTTPサーバーを作成するモジュールはどれですか？",
+      "options": ["fs", "http", "path", "url"],
+      "correctAnswer": 1,
+      "timeLimit": 30
+    }
+  ]
+}

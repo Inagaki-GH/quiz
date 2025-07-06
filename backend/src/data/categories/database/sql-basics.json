@@ -1,0 +1,17 @@
+{
+  "chapterId": "sql-basics",
+  "title": "SQL編: データベース基礎",
+  "description": "SQLの基本的なクエリについて学習します",
+  "category": "database",
+  "order": 1,
+  "status": "beta",
+  "missions": [
+    {
+      "id": "sql-001",
+      "type": "choice",
+      "question": "データベースからデータを取得するSQLコマンドはどれですか？",
+      "options": ["INSERT", "SELECT", "UPDATE", "DELETE"],
+      "correctAnswer": 1
+    }
+  ]
+}
